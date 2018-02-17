@@ -1,9 +1,12 @@
 package ie.gmit.sw;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserInterface
 {
@@ -23,7 +26,7 @@ public class UserInterface
 			"Back to main menu." };
 
 	// En/De objects
-	Encryption5x5 encrypt5;
+	static Encryption5x5 encrypt5 = new Encryption5x5();;
 
 	// file variable
 	Scanner scanner;
@@ -36,12 +39,12 @@ public class UserInterface
 		while (isProgramRunning)
 		{
 			// print header
-			System.out.printf("*%80s*%n",
-					"*=============================================================================*");
+			System.out.printf("%80s%n",
+					"*================================================================================*");
 			System.out.printf("|     %-70s     |%n", mainMenuHeader1);
 			System.out.printf("|     %-70s     |%n", mainMenuHeader2);
-			System.out.printf("*%80s*%n",
-					"*=============================================================================*");
+			System.out.printf("%80s%n",
+					"*================================================================================*");
 
 			menuOption = inputMenu(1, mainMenuOptions);
 
@@ -70,18 +73,59 @@ public class UserInterface
 		{
 			// print header
 			System.out.println("\n\n");
-			System.out.printf("|%80s|%n",
-					"*-----------------------------------------------------------------------------*");
+			System.out.printf("%80s%n",
+					"*--------------------------------------------------------------------------------*");
 			System.out.printf("|     %-70s     |%n", simpleMatrixMenuHeader1);
 			System.out.printf("|     %-70s     |%n", simpleMatrixMenuHeader2);
-			System.out.printf("|%80s|%n",
-					"*-----------------------------------------------------------------------------*");
+			System.out.printf("%80s%n",
+					"*--------------------------------------------------------------------------------*");
 
 			menuOption = inputMenu(1, simpleMatrixOptions);
 
 			switch (menuOption)
 			{
 			case 1:
+				System.out.println("Key 1:(Top Right Matrix):");
+
+				encrypt5.printKey();
+				
+				encrypt5.setKeyTR(inputKey25());
+
+				encrypt5.printKey();
+				
+				System.out.println("Key 2:(Botton Left Matrix)");
+
+				encrypt5.setKeyBL(inputKey25());
+
+				System.out.println("Please enter the file name:");
+				String fileName;
+				do
+				{
+					fileName = inputFileName();
+
+					if (fileName == null)
+					{
+						System.out.println(
+								"File not found, if you are entering a relative file must be in the root foolder of the program\n anyway if we keep not finding your file please enter  the full address (eg: \" c:\\users\\desktop\\myfile.txt \")");
+						System.out.println("Please enter the file name:");
+					}
+
+				} while (fileName == null);
+				
+				
+				 long startTime = System.nanoTime();
+				
+				encrypt5.encrypt5_5(fileName, fileName+".en5");
+
+				
+				
+				long startTimef = System.nanoTime(); 
+				
+				
+				System.out.println("Congratulitions you file have been sucessfuly encrypted in " + ((long)(startTimef - startTime)/(Math.pow(10, 9))) + " seconds.");
+				System.out.println("time="+ (long)(startTimef - startTime));
+				
+				
 				break;
 			case 2:
 				break;
@@ -158,10 +202,10 @@ public class UserInterface
 		return inputNumber;
 	}
 
-	private Character[] inputKey25()
+	private char[] inputKey25()
 	{
 		final int MATRIX_SIZE = 25;
-		
+
 		String keyInput = new String();
 		boolean isKeyGood = false;
 
@@ -176,7 +220,7 @@ public class UserInterface
 			System.out.print("Please enter the 25 uniques  characters  key and then press enter:\n ");
 			keyInput = scanner.nextLine().toUpperCase();
 
-			// check lenght
+			// check length
 			if (keyInput.length() != MATRIX_SIZE)
 			{
 				System.out.print(
@@ -201,36 +245,80 @@ public class UserInterface
 							break;
 						}
 
-						if (inputKeySet.size() == MATRIX_SIZE)
-						{
-							isKeyGood = true;
-						}
 					} else
 					{
 						System.out.println("the key contains invalid characters, please try again.\n");
 						break;
 					}
-				}
+
+				} // for (int i = 0; i < keyInput.length(); i++)
+
+			} // if (keyInput.length() != MATRIX_SIZE)
+
+			if (inputKeySet.size() == MATRIX_SIZE)
+			{
+
+				isKeyGood = true;
 			}
 
+		} // while (!isKeyGood)
+
+		for(Character ca:inputKeySet)
+		{
+			System.out.println(ca);
+		}
+		
+		Character c[] = inputKeySet.toArray(new Character[0]);
+		
+		for(Character ca:c)
+		{
+			System.out.println(ca);
+		}
+		
+		return keyInput.toCharArray();
+	}
+
+	private String inputFileName()
+	{
+		String input;
+
+		//Pattern pattern = Pattern.compile("\\w[.][a-zA-Z][a-zA-Z][a-zA-Z]");
+
+		scanner = new Scanner(System.in);
+
+		input = scanner.nextLine();
+
+		boolean fileExiste = checkIfFileExist(input, true);
+		if (fileExiste)
+		{
+			return input;
+		} else
+		{
+			return null;
 		}
 
-		Character[] c = inputKeySet.toArray(new Character[0]);
-		for (Character ch : c)
-		{
-			System.out.println(ch);
-		}
-		return inputKeySet.toArray(new Character[0]);
+	}
+
+	private boolean checkIfFileExist(String fileName, boolean relativePath)
+	{
+		File file = new File(fileName);
+
+		return file.isFile();
 	}
 
 	public static void main(String[] args)
 	{
-		String op[] =
-		{ "one", "two" };
+	
 		// new UserInterface().MainMenu();
-		new UserInterface().inputKey25();
-		// TODO Auto-generated method stub
-
+		UserInterface u = new UserInterface();
+		// u.inputFileName();
+		u.MainMenu();
+		// System.out.println(u.checkIfFileExist("/out8.txt", true));
+		/*
+		 * Encryption5x5 e = new Encryption5x5(); e.setKeyBL(new
+		 * UserInterface().inputKey25()); e.printKey(); // TODO Auto-generated method
+		 * stub
+		 */
 	}
 
 }
