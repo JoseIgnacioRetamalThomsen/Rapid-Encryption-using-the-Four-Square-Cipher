@@ -1,12 +1,14 @@
 package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit;
 
 public class EncryptFive implements Runnable
 {
 	private final BlockingQueue<String> queueIn;
 	private final BlockingQueue<String> queueOut;
-	
+
 	Interceptor interceptor;
 
 	/**** Encryption variables ******/
@@ -28,12 +30,12 @@ public class EncryptFive implements Runnable
 	char[] tranformedText;
 
 	/*
-	 * Constructor 
+	 * Constructor
 	 */
-	EncryptFive(BlockingQueue<String> queueInP,BlockingQueue<String> queueOutP)
+	EncryptFive(BlockingQueue<String> queueInP, BlockingQueue<String> queueOutP)
 	{
 		queueIn = queueInP;
-		
+
 		queueOut = queueOutP;
 
 		mBL = new char[][]
@@ -52,9 +54,6 @@ public class EncryptFive implements Runnable
 				{ 'X', 'V', 'S', 'B', 'L' } };
 	}
 
-	
-	
-	
 	public boolean setKeyBL(char[] key)
 	{
 		if (key.length != 25)
@@ -96,49 +95,34 @@ public class EncryptFive implements Runnable
 		return true;
 	}
 
-
 	@Override
 	public void run()
 	{
-
-
-		try
+int countT=0;
+		while (!interceptor.isParseDone || queueIn.isEmpty() == false)
 
 		{
 
-			while (interceptor.isParseDone || queueIn.isEmpty() == false)
-
+			//System.out.println(countT++ +" on run Encryp"+!interceptor.isParseDone  );
+			
+			try
 			{
-
 				encryptLine(queueIn.take());
-
-				
-
+			} catch (InterruptedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-		} catch (InterruptedException ex)
-
-		{
-
-			ex.printStackTrace();
-
 		}
 
-		interceptor.parseDone();
+		interceptor.encryptionDone();
 	}
-	
+
 	private void encryptLine(String line)
 	{
-		
-		try
-		{
-			queueOut.put(line);
-			
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		queueOut.offer(line);
 	}
 
 }

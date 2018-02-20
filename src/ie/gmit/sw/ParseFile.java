@@ -72,12 +72,19 @@ public class ParseFile implements Runnable
 		{
 			while ((line = fileIn.readLine()) != null)
 			{
-				queue.put(line);
+				try
+				{
+					queue.put(line);
+				} catch (InterruptedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			fileIn.close();
 			
-		} catch (IOException | InterruptedException e)
+		} catch (IOException e)//| InterruptedException e)
 		{
 		
 			e.printStackTrace();

@@ -1,10 +1,44 @@
 package ie.gmit.sw;
 
-public class Runner {
+import java.io.FileNotFoundException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-	public static void main(String[] args) {
+public class Runner
+{
+
+	public static void main(String[] args)
+	{
+
+		BlockingQueue<String> qParseToEncrypt = new LinkedBlockingQueue<String>();
+		BlockingQueue<String> qEncryptToWrite = new LinkedBlockingQueue<String>();
+
+		Interceptor interceptor = new Interceptor();
+
+		ParseFile parseFile = new ParseFile(qParseToEncrypt);
+		EncryptFive encryptFile = new EncryptFive(qParseToEncrypt, qEncryptToWrite);
+		WriteFile writeFile = new WriteFile(qEncryptToWrite);
+		parseFile.interceptor = encryptFile.interceptor = writeFile.interceptor = interceptor;
+
+		parseFile.inputFileName("warAndPeace-leotolstoy.txt", false);
+		try
+		{
+			writeFile.inputFileName("out67557.txt");
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Thread t1 = new Thread(parseFile);
+
+		Thread t2 =new Thread(encryptFile);
 		
 
+		Thread t3 =new Thread(writeFile);
+		t1.start();
+		t2.start();
+		t3.start();
 		
 	}
 

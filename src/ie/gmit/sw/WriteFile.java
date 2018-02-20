@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class WriteFile implements Runnable
 {
@@ -15,7 +16,7 @@ public class WriteFile implements Runnable
 	
 	Interceptor interceptor; 
 	
-	WriteFile(BlockingQueue queueP)
+	WriteFile(BlockingQueue<String> queueP)
 
 	{
 
@@ -28,6 +29,8 @@ public class WriteFile implements Runnable
 		outputFile = new PrintWriter(new FileOutputStream(new File(fileName), true));
 	}
 	
+	
+	int countT =0;
 	@Override
 	public void run()
 	{
@@ -35,23 +38,22 @@ public class WriteFile implements Runnable
 
 		{
 
-			while (interceptor.isEncryptionDone || queue.isEmpty() == false)
+			while (!interceptor.isEncryptionDone || queue.isEmpty() == false)
 
 			{
-
-				outputFile.print(queue.take());
+				System.out.println(countT++ +" on run WriteFile"+!interceptor.isEncryptionDone  );
+				
+				outputFile.println(((BlockingQueue)queue).take());
 
 				
 
 			}
 
 			outputFile.close();
-		} catch (InterruptedException ex)
-
+		} catch (InterruptedException e)
 		{
-
-			ex.printStackTrace();
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}finally
 		{
 			interceptor.writeDone();
