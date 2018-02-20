@@ -1,73 +1,121 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.BlockingQueue;
 
-public class ParseFile
+public class ParseFile implements Runnable
 {
 
-	private StringBuilder parsedFile;
+	private final BlockingQueue<String> queue;
 
-	public ParseFile()
-	{
-		super();
-		this.parsedFile = new StringBuilder();
-	}
+	BufferedReader fileIn;
 
-	public StringBuilder getParseFile()
-	{
-		return parsedFile;
-	}
-
-	public void setParseFileObject(StringBuilder parseFile)
-	{
-		this.parsedFile = parseFile;
-	}
-
-	public void setParseFilePointer(StringBuilder sb)
-	{
-		sb = parsedFile;
-	}
+	String line;
 	
-	public void clearParseFile()
+	ParseFile(BlockingQueue<String> queueP)
 	{
-		this.parsedFile = new StringBuilder();
+		queue = queueP;
 	}
 
-	public void parseFile(String pathOrURL, boolean isUrl) throws IOException
+	/*
+	 * Read the file path or URL and open the file
+	 * MUST BE ALWAYS CALL BEFORE run();
+	 * 
+	 */
+	public void inputFileName(String pathOrURL, boolean isURL)
 	{
-		String line;
-		BufferedReader fileIn;
-		int counter = 0;
-		if (isUrl)
+		try
 		{
-			URL url = new URL(pathOrURL);
-			fileIn = new BufferedReader(new InputStreamReader(url.openStream()));
-			while ((line = fileIn.readLine()) != null)
+			if (isURL)
 			{
-				System.out.println(line);
-				System.out.println(counter++);
+				URL url;
+
+				url = new URL(pathOrURL);
+
+				fileIn = new BufferedReader(new InputStreamReader(url.openStream()));
+
+			} else
+			{
+
+				fileIn = new BufferedReader(new InputStreamReader(new FileInputStream(pathOrURL)));
 
 			}
-			
-		} else
+
+		} catch (FileNotFoundException e)
 		{
 
-			fileIn = new BufferedReader(new InputStreamReader(new FileInputStream(pathOrURL)));
-			
-			while ((line = fileIn.readLine()) != null)
-			{
-				System.out.println(line);
-				System.out.println(counter++);
-
-			}
-			
+			e.printStackTrace();
+		} catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args) throws IOException
+	/*
+	 *  Read line and put it into the BlockingQueue
+	 *  inputFilename() must be be call before.
+	 */
+	
+	@Override
+	public void run()
 	{
-		System.out.println("here");
-		new ParseFile().parseFile("warandpeace-leotolstoy.txt", false);
+		try
+		{
+			while ((line = fileIn.readLine()) != null)
+			{
+				queue.put(line);
+			}
+			
+		} catch (IOException | InterruptedException e)
+		{
+		
+			e.printStackTrace();
+		}
+		
 	}
+
+	/*
+	 * private StringBuilder parsedFile;
+	 * 
+	 * public ParseFile() { super(); this.parsedFile = new StringBuilder(); }
+	 * 
+	 * public StringBuilder getParseFile() { return parsedFile; }
+	 * 
+	 * public void setParseFileObject(StringBuilder parseFile) { this.parsedFile =
+	 * parseFile; }
+	 * 
+	 * public void setParseFilePointer(StringBuilder sb) { sb = parsedFile; }
+	 * 
+	 * public void clearParseFile() { this.parsedFile = new StringBuilder(); }
+	 * 
+	 * public void parseFile(String pathOrURL, boolean isUrl) throws IOException {
+	 * String line; BufferedReader fileIn; int counter = 0; if (isUrl) { URL url =
+	 * new URL(pathOrURL); fileIn = new BufferedReader(new
+	 * InputStreamReader(url.openStream())); while ((line = fileIn.readLine()) !=
+	 * null) { System.out.println(line); System.out.println(counter++);
+	 * 
+	 * }
+	 * 
+	 * } else {
+	 * 
+	 * fileIn = new BufferedReader(new InputStreamReader(new
+	 * FileInputStream(pathOrURL)));
+	 * 
+	 * while ((line = fileIn.readLine()) != null) { System.out.println(line);
+	 * System.out.println(counter++);
+	 * 
+	 * }
+	 * 
+	 * } }
+	 * 
+	 * public static void main(String[] args) throws IOException {
+	 * System.out.println("here"); new
+	 * ParseFile().parseFile("warandpeace-leotolstoy.txt", false); }
+	 */
 }
