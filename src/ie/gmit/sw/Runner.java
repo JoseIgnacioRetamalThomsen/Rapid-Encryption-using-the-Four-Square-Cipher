@@ -3,6 +3,7 @@ package ie.gmit.sw;
 import java.io.FileNotFoundException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedTransferQueue;
 
 public class Runner
 {
@@ -10,8 +11,8 @@ public class Runner
 	public static void main(String[] args)
 	{
 
-		BlockingQueue<String> qParseToEncrypt = new LinkedBlockingQueue<String>();
-		BlockingQueue<String> qEncryptToWrite = new LinkedBlockingQueue<String>();
+		BlockingQueue<String> qParseToEncrypt = new LinkedTransferQueue <String>();
+		BlockingQueue<String> qEncryptToWrite = new LinkedTransferQueue <String>();
 
 		Interceptor interceptor = new Interceptor();
 
@@ -23,7 +24,7 @@ public class Runner
 		parseFile.inputFileName("warAndPeace-leotolstoy.txt", false);
 		try
 		{
-			writeFile.inputFileName("out67557.txt");
+			writeFile.inputFileName("outo88887.txt");
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
@@ -36,6 +37,7 @@ public class Runner
 		
 
 		Thread t3 =new Thread(writeFile);
+		
 		t1.start();
 		t2.start();
 		t3.start();

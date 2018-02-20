@@ -41,7 +41,7 @@ public class WriteFile implements Runnable
 			while (!interceptor.isEncryptionDone || queue.isEmpty() == false)
 
 			{
-				System.out.println(countT++ +" on run WriteFile"+!interceptor.isEncryptionDone  );
+				//System.out.println(countT++ +" on run WriteFile"+!interceptor.isEncryptionDone  );
 				
 				outputFile.println(((BlockingQueue)queue).take());
 
