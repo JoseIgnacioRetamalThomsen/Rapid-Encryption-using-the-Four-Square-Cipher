@@ -75,13 +75,17 @@ public class ParseFile implements Runnable
 				queue.put(line);
 			}
 			
+			fileIn.close();
+			
 		} catch (IOException | InterruptedException e)
 		{
 		
 			e.printStackTrace();
 		}finally
 		{
-			interceptor.parseDone();;
+			//here for no risk and endless loop;
+			interceptor.parseDone();
+			
 		}
 		
 		
