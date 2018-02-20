@@ -14,9 +14,12 @@ public class ParseFile implements Runnable
 
 	String line;
 	
+	Interceptor interceptor;
+	
 	ParseFile(BlockingQueue<String> queueP)
 	{
 		queue = queueP;
+		
 	}
 
 	/*
@@ -76,7 +79,11 @@ public class ParseFile implements Runnable
 		{
 		
 			e.printStackTrace();
+		}finally
+		{
+			interceptor.parseDone();;
 		}
+		
 		
 	}
 
