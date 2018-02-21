@@ -98,35 +98,166 @@ public class EncryptFive implements Runnable
 	@Override
 	public void run()
 	{
-int countT=0;
-		while (!interceptor.isParseDone || queueIn.isEmpty() == false)
+		String line = null;
+		createEncMatrices();
 
+		while (true)
 		{
 
-			//System.out.println(countT++ +" on run Encryp"+!interceptor.isParseDone  );
-			
 			try
 			{
-				encryptLine(queueIn.take());
+				line = queueIn.take();
+
 			} catch (InterruptedException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-		}
+			if (!line.equals(Cons.END_FILE))
+			{
+				encryptLine(line);
 
-		interceptor.encryptionDone();
-	}
+			} else
+			{
+				break;
+			}
 
-	private void encryptLine(String line)
-	{
-int x=2;
-		for(int i=0;i<1000;i++)
+		} // while(true)
+		try
 		{
-		x=x*i;	
+			queueOut.put(Cons.END_FILE);
+
+		} catch (InterruptedException e)
+		{
+
+			e.printStackTrace();
 		}
-		queueOut.offer(line);
+
+	}// run()
+
+	char[] tString;
+
+	int mTRRow[] = new int['Z' + 1];
+	int mTRCol[] = new int['Z' + 1];
+	int mBLRow[] = new int['Z' + 1];
+	int mBRCol[] = new int['Z' + 1];
+
+	char l1 = 0, l2 = 0;
+	int l1p = 0, l2p = 0;
+	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+	
+	boolean letterFordward = false;
+
+	String stringOut;
+
+	private void encryptLine(String lineEncryptp)
+	{
+		if (l1 != 0)
+		{
+			l1p = 0;
+			letterFordward = true;
+
+		} else
+		{
+			letterFordward = false;
+		}
+		tranformedText = new char[lineEncryptp.length() + 1];
+
+		lineEncryptp = lineEncryptp.toUpperCase();
+
+		for (int position = 0; position < lineEncryptp.length(); position++)
+		{
+
+			
+			
+			if (lineEncryptp.charAt(position) >= 'A' && lineEncryptp.charAt(position) <= 'Z')
+			{
+				if (l1 == 0)
+				{
+					if (lineEncryptp.charAt(position) == 'J')
+					{
+						l1 = 'I';
+					} else
+					{
+						l1 = lineEncryptp.charAt(position);
+					}
+					if (!letterFordward)
+					{
+						l1p = position;
+					} else
+					{
+						l1p = position + 1;
+					}
+
+				} else if (l2 == 0)
+				{
+					if (lineEncryptp.charAt(position) == 'J')
+					{
+						l2 = 'I';
+
+					} else
+					{
+						l2 = lineEncryptp.charAt(position);
+					}
+					  if (!letterFordward) {
+                          l2p = position;
+                      } else {
+                          l2p = position + 1;
+                      }
+
+					tranformedText[l1p] = mTR[mTRRow[l1]][mTRCol[l2]];
+
+					tranformedText[l2p] = mBL[mBLRow[l2]][mBRCol[l1]];
+					l1 = 0;
+					l2 = 0;
+				}
+			} else
+			{
+				 if (!letterFordward) {
+                     // System.out.println(position);
+					 tranformedText[position] = ' ';
+                 } else {
+                	 tranformedText[position + 1] = ' ';
+                 }
+
+			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
+		}
+		try
+		{
+
+			queueOut.put(new String(tranformedText));
+			// queueOut.put("w");
+
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
+	private void createEncMatrices()
+	{
+
+		for (x2 = 0; x2 < 5; x2++)
+		{
+			for (x1 = 0; x1 < 5; x1++)
+			{
+				mBRCol[mTL[x1][x2]] = x2;
+				mTRRow[mTL[x1][x2]] = x1;
+
+			}
+		}
+
+		for (y2 = 0; y2 < 5; y2++)
+		{
+			for (y1 = 0; y1 < 5; y1++)
+			{
+				mBLRow[mTL[y1][y2]] = y1;
+				mTRCol[mTL[y1][y2]] = y2;
+
+			}
+		}
+	}// createEncMatrices()
 
 }

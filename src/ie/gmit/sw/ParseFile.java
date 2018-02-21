@@ -68,6 +68,7 @@ public class ParseFile implements Runnable
 	@Override
 	public void run()
 	{
+		interceptor.startTime();
 		try
 		{
 			while ((line = fileIn.readLine()) != null)
@@ -80,6 +81,15 @@ public class ParseFile implements Runnable
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			
+			try
+			{
+				queue.put(Cons.END_FILE);
+			} catch (InterruptedException e)
+			{
+				
+				e.printStackTrace();
 			}
 			
 			fileIn.close();

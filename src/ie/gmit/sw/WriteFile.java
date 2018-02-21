@@ -1,3 +1,10 @@
+/*
+ * top key ZGPTFOIHMUWDRCNYKEQAXVSBL 
+ * 
+ * bot key MFNBDCRHSAXYOGVITUEWLQZKP
+ */
+
+
 package ie.gmit.sw;
 
 import java.io.File;
@@ -11,11 +18,11 @@ public class WriteFile implements Runnable
 {
 
 	private final BlockingQueue<String> queue;
-	
+
 	PrintWriter outputFile;
-	
-	Interceptor interceptor; 
-	
+
+	Interceptor interceptor;
+
 	WriteFile(BlockingQueue<String> queueP)
 
 	{
@@ -23,44 +30,53 @@ public class WriteFile implements Runnable
 		queue = queueP;
 
 	}
-	
+
 	public void inputFileName(String fileName) throws FileNotFoundException
 	{
 		outputFile = new PrintWriter(new FileOutputStream(new File(fileName), true));
 	}
-	
-	
-	int countT =0;
+
+	int countT = 0;
+
 	@Override
 	public void run()
 	{
+		String line;
 		try
 
 		{
 
-			while (!interceptor.isEncryptionDone || queue.isEmpty() == false)
+			while (true)
 
 			{
-				//System.out.println(countT++ +" on run WriteFile"+!interceptor.isEncryptionDone  );
-				
-				outputFile.println(((BlockingQueue)queue).take());
+				// System.out.println(countT++ +" on run
+				// WriteFile"+!interceptor.isEncryptionDone );
 
+				line = queue.take();
 				
+				if (!line.equals(Cons.END_FILE))
+				{
+					outputFile.println(line);
+
+				} else
+				{
+					break;
+				}
 
 			}
 
 			outputFile.close();
+			interceptor.stopTime();
+			interceptor.displayTimeMS();
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally
+		} finally
 		{
-			interceptor.writeDone();
+			
 		}
-		
+
 	}
-	
-	
 
 }

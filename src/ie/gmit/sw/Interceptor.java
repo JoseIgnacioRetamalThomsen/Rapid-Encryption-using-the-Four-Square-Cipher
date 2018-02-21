@@ -27,7 +27,7 @@ public class Interceptor
 
 	public void displayTimeMS()
 	{
-		System.out.println((startTime - stopTime) / Math.pow(10, 9));
+		System.out.println((stopTime - startTime)/ Math.pow(10, 6));
 	}
 
 	public void parseDone()
