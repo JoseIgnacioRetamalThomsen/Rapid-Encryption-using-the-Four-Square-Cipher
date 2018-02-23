@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 public class ParseFile implements Runnable
 {
 
-	private final BlockingQueue<String> queue;
+	private final BlockingQueue<CharSequence> queue;
 
 	BufferedReader fileIn;
 
@@ -16,7 +16,7 @@ public class ParseFile implements Runnable
 	
 	Interceptor interceptor;
 	
-	ParseFile(BlockingQueue<String> queueP)
+	ParseFile(BlockingQueue<CharSequence> queueP)
 	{
 		queue = queueP;
 		
@@ -85,7 +85,7 @@ public class ParseFile implements Runnable
 			
 			try
 			{
-				queue.put(Cons.END_FILE);
+				queue.put(new Poison());
 			} catch (InterruptedException e)
 			{
 				

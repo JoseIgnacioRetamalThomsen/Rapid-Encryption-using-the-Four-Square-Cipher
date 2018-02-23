@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 public class EncryptFive implements Runnable
 {
-	private final BlockingQueue<String> queueIn;
-	private final BlockingQueue<String> queueOut;
+	private final BlockingQueue<CharSequence> queueIn;
+	private final BlockingQueue<CharSequence> queueOut;
 
 	Interceptor interceptor;
 
@@ -32,7 +32,7 @@ public class EncryptFive implements Runnable
 	/*
 	 * Constructor
 	 */
-	EncryptFive(BlockingQueue<String> queueInP, BlockingQueue<String> queueOutP)
+	EncryptFive(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
 	{
 		queueIn = queueInP;
 
@@ -98,8 +98,9 @@ public class EncryptFive implements Runnable
 	@Override
 	public void run()
 	{
-		String line = null;
+		CharSequence line = null;
 		createEncMatrices();
+		
 
 		while (true)
 		{
@@ -114,9 +115,9 @@ public class EncryptFive implements Runnable
 				e.printStackTrace();
 			}
 
-			if (!line.equals(Cons.END_FILE))
+			if (!(line instanceof Poison))
 			{
-				encryptLine(line);
+				encryptLine((String)line);
 
 			} else
 			{
@@ -124,9 +125,17 @@ public class EncryptFive implements Runnable
 			}
 
 		} // while(true)
+		
+		//check if there is last letter
+		if(l1!=0)
+		{
+			
+			line = ""+mTR[mTRRow[l1]][0]+ mBL[0][mBRCol[l1]];
+		}
 		try
 		{
-			queueOut.put(Cons.END_FILE);
+			queueOut.put(line);
+			queueOut.put(new Poison());
 
 		} catch (InterruptedException e)
 		{

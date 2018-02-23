@@ -11,7 +11,21 @@ public class Runner
 	public static void main(String[] args) throws InterruptedException
 	{
 
-		Encrypt.encryptOne();
+		//Encrypt.encryptOne();
+		//Encrypt.decryptOne();
+		Encrypt15 e = new Encrypt15();
+		//e.generateRandomKeys();
+		//e.writeKeysToFile();
+		e.readKeysFromFile();
+		e.displayKeys();
+	//	e.generateRandomKeys();
+	/*
+		for(char c=0;c<256;c++)
+		{
+			System.out.println(c);
+		}*/
+		
+		System.out.println(((int)'\\'));
 	}
 
 }

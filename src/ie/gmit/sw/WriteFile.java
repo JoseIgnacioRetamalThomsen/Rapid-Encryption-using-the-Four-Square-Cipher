@@ -17,13 +17,13 @@ import java.util.concurrent.TimeUnit;
 public class WriteFile implements Runnable
 {
 
-	private final BlockingQueue<String> queue;
+	private final BlockingQueue<CharSequence> queue;
 
 	PrintWriter outputFile;
 
 	Interceptor interceptor;
 
-	WriteFile(BlockingQueue<String> queueP)
+	WriteFile(BlockingQueue<CharSequence> queueP)
 
 	{
 
@@ -41,7 +41,7 @@ public class WriteFile implements Runnable
 	@Override
 	public void run()
 	{
-		String line;
+		CharSequence line;
 		try
 
 		{
@@ -54,7 +54,7 @@ public class WriteFile implements Runnable
 
 				line = queue.take();
 				
-				if (!line.equals(Cons.END_FILE))
+				if (!(line instanceof Poison ))
 				{
 					outputFile.println(line);
 
