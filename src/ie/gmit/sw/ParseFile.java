@@ -27,7 +27,7 @@ public class ParseFile implements Runnable
 	 * MUST BE ALWAYS CALL BEFORE run();
 	 * 
 	 */
-	public void inputFileName(String pathOrURL, boolean isURL)
+	public void getFileName(String pathOrURL, boolean isURL)
 	{
 		try
 		{

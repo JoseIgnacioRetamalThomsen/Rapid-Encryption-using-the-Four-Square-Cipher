@@ -68,7 +68,7 @@ public class Encrypt
 		parseFile.interceptor = encryptFile.interceptor = writeFile.interceptor = interceptor;
 
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.inputFileName("d7.txt", false);
+		parseFile.getFileName("d7.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
@@ -122,7 +122,7 @@ public class Encrypt
 		encryptFile.displayKeys();
 		
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.inputFileName("t.txt", false);
+		parseFile.getFileName("t.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
@@ -172,7 +172,7 @@ public class Encrypt
 		encryptFile.readKeysFromFile();
 		encryptFile.displayKeys();
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.inputFileName("t1.txt", false);
+		parseFile.getFileName("t1.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{

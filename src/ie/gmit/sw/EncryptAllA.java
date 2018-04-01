@@ -18,8 +18,8 @@ public class EncryptAllA
 	
 		
 		
-		BlockingQueue qParseToEncrypt = new LinkedBlockingQueue <CharSequence>(1000);
-		BlockingQueue qEncryptToWrite = new LinkedBlockingQueue <CharSequence>(1000);
+		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue <CharSequence>(1000);
+		BlockingQueue<CharSequence> qEncryptToWrite = new LinkedBlockingQueue <CharSequence>(1000);
 
 		KeyManagerA keyManager = new KeyManagerA();
 		
@@ -32,7 +32,7 @@ public class EncryptAllA
 		parseFile.interceptor = encryptFile.interceptor = writeFile.interceptor = interceptor;
 
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.inputFileName("t.txt", false);
+		parseFile.getFileName("t.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
