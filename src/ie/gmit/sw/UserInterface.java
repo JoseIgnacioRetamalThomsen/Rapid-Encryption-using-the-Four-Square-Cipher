@@ -21,12 +21,19 @@ public class UserInterface
 	// 5x5 matrix strings
 	final static String simpleMatrixMenuHeader1 = " Four-Square Cipher .Four 5x5 matrices.";
 	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
-	final static String simpleMatrixOptions[] =
+	final static String encryptionAMenuOptions[] =
 	{ "Input Keys in console.", "Input keys using file.", "Random generate keyy.", "Use last keys.",
 			"Back to main menu." };
 
 	// En/De objects
-	static Encryption5x5 encrypt5 = new Encryption5x5();;
+	static Encryption5x5 encrypt5 = new Encryption5x5();
+	
+	
+	
+	static KeyManagerA keyManagerA = new KeyManagerA();
+	static FileManager fileManagerA = new FileManager();
+	
+	static EncryptAllA  encryptAllA = new EncryptAllA();
 
 	// file variable
 	Scanner scanner;
@@ -51,15 +58,17 @@ public class UserInterface
 
 			
 		}
-	}// MainMenu()
+		
+	}//start()
 
+	
 	private static boolean mainMenu(int menuOption)
 	{
 		
 		switch (menuOption)
 		{
 		case 1:
-			encryption5_5Menu();
+			encryptionAMenu();
 			break;
 		case 2:
 			System.out.println("2");
@@ -74,7 +83,7 @@ public class UserInterface
 	}
 	
 	
-	private static void encryption5_5Menu()
+	private static void encryptionAMenu()
 	{
 		int menuOption;
 		boolean isOptionRunning = true;
@@ -91,8 +100,13 @@ public class UserInterface
 					"*--------------------------------------------------------------------------------*");
 
 			
+			System.out.println();
+			keyManagerA.displayTRKey();
+			keyManagerA.displayBLKey();
+			System.out.println();
 			
-			menuOption = inputMenu(1, simpleMatrixOptions);
+			
+			menuOption = inputMenu(1, encryptionAMenuOptions);
 
 			switch (menuOption)
 			{
@@ -327,6 +341,7 @@ public class UserInterface
 	
 		// new UserInterface().MainMenu();
 		UserInterface u = new UserInterface();
+		u.start();
 		// u.inputFileName();
 		//u.MainMenu();
 		// System.out.println(u.checkIfFileExist("/out8.txt", true));
