@@ -12,16 +12,16 @@ public class UserInterface
 {
 	// constants
 	// menu strings
-	final String mainMenuHeader1 = "Rapid Encryption using the Four-Square Cipher ";
-	final String mainMenuHeader2 = "Jose Ignacio Retamal, Data Strutures & Algorithms, GMIT 2018";
-	final String[] mainMenuOptions =
-	{ "Encryption using four 5x5 matrices, 25 letters, j is remplaced by i",
+	final static String mainMenuHeader1 = "Rapid Encryption using the Four-Square Cipher ";
+	final static String mainMenuHeader2 = "Jose Ignacio Retamal, Data Strutures & Algorithms, GMIT 2018";
+	final static String[] mainMenuOptions =
+	{ "Encryption using four 5x5 matrices, 25 e letters(the relatively rare letter j is merged with the letter i).",
 			"nxn matrix using a chosed sequence of character from asc table", "Exit" };
 
 	// 5x5 matrix strings
-	final String simpleMatrixMenuHeader1 = " Four-Square Cipher using 25 english alphabet letters";
-	final String simpleMatrixMenuHeader2 = " ";
-	final String simpleMatrixOptions[] =
+	final static String simpleMatrixMenuHeader1 = " Four-Square Cipher .Four 5x5 matrices.";
+	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
+	final static String simpleMatrixOptions[] =
 	{ "Input Keys in console.", "Input keys using file.", "Random generate keyy.", "Use last keys.",
 			"Back to main menu." };
 
@@ -31,40 +31,50 @@ public class UserInterface
 	// file variable
 	Scanner scanner;
 
-	private void MainMenu()
+	public static void start()
 	{
-		int menuOption;
+		// print header
+		System.out.printf("%80s%n",
+				"*================================================================================*");
+		System.out.printf("|     %-70s     |%n", mainMenuHeader1);
+		System.out.printf("|     %-70s     |%n", mainMenuHeader2);
+		System.out.printf("%80s%n",
+				"*================================================================================*\n\n");
+		
 		boolean isProgramRunning = true;
 
 		while (isProgramRunning)
 		{
-			// print header
-			System.out.printf("%80s%n",
-					"*================================================================================*");
-			System.out.printf("|     %-70s     |%n", mainMenuHeader1);
-			System.out.printf("|     %-70s     |%n", mainMenuHeader2);
-			System.out.printf("%80s%n",
-					"*================================================================================*");
+			
 
-			menuOption = inputMenu(1, mainMenuOptions);
+			isProgramRunning = mainMenu( inputMenu(1, mainMenuOptions));
 
-			switch (menuOption)
-			{
-			case 1:
-				doEncryption5();
-				break;
-			case 2:
-				System.out.println("2");
-				break;
-			case 3:
-				isProgramRunning = false;
-				System.out.println("Program terminated.");
-				break;
-			}
+			
 		}
 	}// MainMenu()
 
-	private void doEncryption5()
+	private static boolean mainMenu(int menuOption)
+	{
+		
+		switch (menuOption)
+		{
+		case 1:
+			encryption5_5Menu();
+			break;
+		case 2:
+			System.out.println("2");
+			break;
+		case 3:
+			
+			System.out.println("Program terminated.");
+			return false;
+			
+		}
+		return true;
+	}
+	
+	
+	private static void encryption5_5Menu()
 	{
 		int menuOption;
 		boolean isOptionRunning = true;
@@ -80,6 +90,8 @@ public class UserInterface
 			System.out.printf("%80s%n",
 					"*--------------------------------------------------------------------------------*");
 
+			
+			
 			menuOption = inputMenu(1, simpleMatrixOptions);
 
 			switch (menuOption)
@@ -146,8 +158,9 @@ public class UserInterface
 	 * first option which will be increase by one until the length of the array
 	 * options
 	 */
-	private int inputMenu(int lower, String[] options)
+	private static int inputMenu(int lower, String[] options)
 	{
+		Scanner scanner;
 
 		int inputNumber = 0;
 		boolean isInputRigth = true;
@@ -202,8 +215,10 @@ public class UserInterface
 		return inputNumber;
 	}
 
-	private char[] inputKey25()
+	private static char[] inputKey25()
 	{
+		Scanner scanner;
+		
 		final int MATRIX_SIZE = 25;
 
 		String keyInput = new String();
@@ -278,8 +293,9 @@ public class UserInterface
 		return keyInput.toCharArray();
 	}
 
-	private String inputFileName()
+	private static String inputFileName()
 	{
+		Scanner scanner;
 		String input;
 
 		//Pattern pattern = Pattern.compile("\\w[.][a-zA-Z][a-zA-Z][a-zA-Z]");
@@ -299,7 +315,7 @@ public class UserInterface
 
 	}
 
-	private boolean checkIfFileExist(String fileName, boolean relativePath)
+	private static boolean checkIfFileExist(String fileName, boolean relativePath)
 	{
 		File file = new File(fileName);
 
@@ -312,7 +328,7 @@ public class UserInterface
 		// new UserInterface().MainMenu();
 		UserInterface u = new UserInterface();
 		// u.inputFileName();
-		u.MainMenu();
+		//u.MainMenu();
 		// System.out.println(u.checkIfFileExist("/out8.txt", true));
 		/*
 		 * Encryption5x5 e = new Encryption5x5(); e.setKeyBL(new

@@ -1,12 +1,9 @@
 package ie.gmit.sw;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -14,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 
-public class Encrypt15 implements Runnable
+public class Decrypt15 implements Runnable
 {
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
@@ -23,17 +20,15 @@ public class Encrypt15 implements Runnable
 	final char mTL[][] = new char[15][];
 
 	// Bottom left and top right matrices
-	
-	char[][] mTR = new char[15][];
 	char[][] mBL = new char[15][];
 
-	
+	char[][] mTR = new char[15][];
 
 	char[] tranformedText;
 	
 	Interceptor interceptor;
 
-	public Encrypt15(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
+	public Decrypt15(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
 	{
 		queueIn = queueInP;
 
@@ -56,66 +51,45 @@ public class Encrypt15 implements Runnable
 		List<Character> mBLElements = new LinkedList<Character>();
 		List<Character> mTRElements = new LinkedList<Character>();
 
-		for (int i = 32; i <= 256; i++)
+		for (int i = 0; i < 225; i++)
 		{
-			mTRElements.add((char) (i));
-			mBLElements.add((char) (i));
+			mTRElements.add((char) (i + 31));
+			mBLElements.add((char) (i + 31));
 		}
 
 		Collections.shuffle(mTRElements);
+
 		Collections.shuffle(mBLElements);
-		
 		setKeys(mTRElements, mBLElements);
 	}
 
 	public void writeKeysToFile()
 	{
-		java.io.FileOutputStream fos = null;
-		try
-		{
-			fos = new java.io.FileOutputStream(new File("file.txt"));
-		} catch (FileNotFoundException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		PrintWriter outputFile;
 
 		try
 		{
 			outputFile = new PrintWriter(new FileOutputStream(new File("Keys.txt"), false));
 			int count = 0;
-			
 			for (int x1 = 0; x1 < 15; x1++)
 			{
 				for (int y1 = 0; y1 < 15; y1++)
 				{
 					System.out.println(count++);
-					fos.write(mTR[y1][x1]);
-					//fos.write('\r');
-					outputFile.write(mTR[y1][x1]);
+					outputFile.print(mTR[y1][x1]);
 				}
 			}
-			outputFile.write('\n');
-			// fos.write('\r');
-			 fos.write('\n');
 			outputFile.println();
 			for (int x1 = 0; x1 < 15; x1++)
 			{
 				for (int y1 = 0; y1 < 15; y1++)
 				{
 					System.out.println(count++);
-					fos.write(mBL[y1][x1]);
-					outputFile.write(mBL[y1][x1]);
+					outputFile.print(mBL[y1][x1]);
 				}
 			}
 			outputFile.close();
-			fos.close();
 		} catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,29 +103,23 @@ public class Encrypt15 implements Runnable
 
 		int count = 0;
 
-		byte key[] = new byte[500];
-		
 		Scanner fileIn;
 		String line;
 		try
 		{
-			FileInputStream in = new FileInputStream("file.txt");
-			fileIn = new Scanner(new File("file.txt"));
-			//line = fileIn.nextLine();
-			in.read(key);
-			
+			fileIn = new Scanner(new File("keys.txt"));
+			line = fileIn.nextLine();
 			for (int i = 0; i < 225; i++)
 			{
 
-				mTRElements.add((char)key[i]);
-				System.out.println(key[i]);
+				mTRElements.add(line.charAt(i));
 
 			}
-			//line = fileIn.nextLine();
-			for (int i =225; i < 450; i++)
+			line = fileIn.nextLine();
+			for (int i = 0; i < 225; i++)
 			{
 
-				mBLElements.add((char)key[i]);
+				mBLElements.add(line.charAt(i));
 
 			}
 			fileIn.close();
@@ -241,8 +209,8 @@ public class Encrypt15 implements Runnable
 		{
 			for (x1 = 0; x1 < 15; x1++)
 			{
-				mBRCol[(int)mTL[x1][x2]] = x2;
-				mTRRow[(int)mTL[x1][x2]] = x1;
+				mBRCol[(int)mTR[x1][x2]]=x2;
+				mTRRow[(int)mTR[x1][x2]]=x1;
 
 			}
 		}
@@ -251,13 +219,12 @@ public class Encrypt15 implements Runnable
 		{
 			for (y1 = 0; y1 < 15; y1++)
 			{
-				mBLRow[(int)mTL[y1][y2]] = y1;
-				mTRCol[(int)mTL[y1][y2]] = y2;
+				mBLRow[(int)mBL[y1][y2]] = y1;
+				mTRCol[(int)mBL[y1][y2]] = y2;
 
 			}
 		}
 	}// createEncMatrices()
-
 	
 	private void encryptLine(String lineEncryptp)
 	{
@@ -306,17 +273,14 @@ public class Encrypt15 implements Runnable
                           l2p = position + 1;
                       }
 
+					  tranformedText[l1p] = mTL[mTRRow[(int)l1]][mTRCol[(int)l2]];
 
-						tranformedText[l1p] = mTR[mTRRow[(int)l1]][mTRCol[(int)l2]];
-
-						tranformedText[l2p] = mBL[mBLRow[(int)l2]][mBRCol[(int)l1]];
-					  
+						tranformedText[l2p] = mTL[mBLRow[(int)l2]][mBRCol[(int)l1]];
 					l1 = 0;
 					l2 = 0;
 				}
 			} else
-			{
-				/*
+			{/*
 				 if (!letterFordward) {
                      // System.out.println(position);
 					 tranformedText[position] = ' ';
@@ -329,11 +293,6 @@ public class Encrypt15 implements Runnable
 		try
 		{
 
-			for(char ch:tranformedText)
-			{
-				System.out.print(ch+" x ");
-			}
-			
 			queueOut.put(new String(tranformedText));
 			// queueOut.put("w");
 
@@ -380,7 +339,7 @@ public class Encrypt15 implements Runnable
 		if(l1!=0)
 		{
 			
-			//line = ""+mTR[mTRRow[l1]][0]+ mBL[0][mBRCol[l1]];
+			line = ""+ mTL[mTRRow[l1]][0]+ mTL[0][mBRCol[l1]];
 		}
 		try
 		{

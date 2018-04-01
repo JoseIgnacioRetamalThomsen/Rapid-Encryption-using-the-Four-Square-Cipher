@@ -2,7 +2,7 @@ package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
 
-public class DecryptOne implements Runnable
+public class DecryptA implements Runnable
 {
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
@@ -30,7 +30,7 @@ public class DecryptOne implements Runnable
 	/*
 	 * Constructor
 	 */
-	DecryptOne(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
+	DecryptA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
 	{
 		queueIn = queueInP;
 
@@ -126,7 +126,8 @@ public class DecryptOne implements Runnable
 		
 		//check if there is last letter
 		if(l1!=0)
-		{tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
+		{
+			tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
 
 		tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
 			

@@ -3,11 +3,23 @@ package ie.gmit.sw;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeUnit;
+/*
+ * Encryption 5 matrix side A
+ * Class for encryption using a 5 side matrix 
+ * Line by line , if a line have a odd number of 
+ * characters the character is pass over to the next line
+ * if the last line have a odd number of characters the last character 
+ * will be encrypted with the first element in the matrix (row=0, col=0).
+ */
 
-public class EncryptFive implements Runnable
+public class EncryptionA implements Runnable
 {
+	private final static int MATRIX_SIZE = 5;
+
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
+
+	private KeyManagerA keyManager;
 
 	Interceptor interceptor;
 
@@ -23,35 +35,52 @@ public class EncryptFive implements Runnable
 			{ 'V', 'W', 'X', 'Y', 'Z' } };
 
 	// Bottom left and top right matrices
+	char[][] mTR;
 	char[][] mBL;
 
-	char[][] mTR;
-
 	char[] tranformedText;
+
+	char tCharIn;
+	char[] tString;
+
+	int mTRRow[] = new int['Z' + 1];
+	int mTRCol[] = new int['Z' + 1];
+	int mBLRow[] = new int['Z' + 1];
+	int mBRCol[] = new int['Z' + 1];
+
+	char l1 = 0, l2 = 0;
+	int l1p = 0, l2p = 0;
+	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+
+	boolean letterFordward = false;
+
+	String stringOut;
 
 	/*
 	 * Constructor
 	 */
-	EncryptFive(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
+	public EncryptionA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP,
+			KeyManagerA keyManagerP)
 	{
 		queueIn = queueInP;
-
 		queueOut = queueOutP;
 
-		mBL = new char[][]
-		{
-				{ 'M', 'F', 'N', 'B', 'D' },
-				{ 'C', 'R', 'H', 'S', 'A' },
-				{ 'X', 'Y', 'O', 'G', 'V' },
-				{ 'I', 'T', 'U', 'E', 'W' },
-				{ 'L', 'Q', 'Z', 'K', 'P' } };
-		mTR = new char[][]
-		{
-				{ 'Z', 'G', 'P', 'T', 'F' },
-				{ 'O', 'I', 'H', 'M', 'U' },
-				{ 'W', 'D', 'R', 'C', 'N' },
-				{ 'Y', 'K', 'E', 'Q', 'A' },
-				{ 'X', 'V', 'S', 'B', 'L' } };
+		mTR = keyManagerP.mTR;
+		mBL = keyManagerP.mBL;
+
+		/*
+		 * 
+		 * mBL = new char[][] { { 'M', 'F', 'N', 'B', 'D' }, { 'C', 'R', 'H', 'S', 'A'
+		 * }, { 'X', 'Y', 'O', 'G', 'V' }, { 'I', 'T', 'U', 'E', 'W' }, { 'L', 'Q', 'Z',
+		 * 'K', 'P' } }; mTR = new char[][] { { 'Z', 'G', 'P', 'T', 'F' }, { 'O', 'I',
+		 * 'H', 'M', 'U' }, { 'W', 'D', 'R', 'C', 'N' }, { 'Y', 'K', 'E', 'Q', 'A' }, {
+		 * 'X', 'V', 'S', 'B', 'L' } };
+		 */
+	}
+
+	public void setQueues()
+	{
+
 	}
 
 	public boolean setKeyBL(char[] key)
@@ -65,7 +94,7 @@ public class EncryptFive implements Runnable
 		for (Character character : key)
 		{
 			mBL[row][col++] = character;
-			if (col == 5)
+			if (col == MATRIX_SIZE)
 			{
 				col = 0;
 				row++;
@@ -86,7 +115,7 @@ public class EncryptFive implements Runnable
 		for (Character character : key)
 		{
 			mTR[row][col++] = character;
-			if (col == 5)
+			if (col == MATRIX_SIZE)
 			{
 				col = 0;
 				row++;
@@ -100,7 +129,6 @@ public class EncryptFive implements Runnable
 	{
 		CharSequence line = null;
 		createEncMatrices();
-		
 
 		while (true)
 		{
@@ -117,7 +145,7 @@ public class EncryptFive implements Runnable
 
 			if (!(line instanceof Poison))
 			{
-				encryptLine((String)line);
+				encryptLine((String) line);
 
 			} else
 			{
@@ -125,12 +153,12 @@ public class EncryptFive implements Runnable
 			}
 
 		} // while(true)
-		
-		//check if there is last letter
-		if(l1!=0)
+
+		// check if there is last letter
+		if (l1 != 0)
 		{
-			
-			line = ""+mTR[mTRRow[l1]][0]+ mBL[0][mBRCol[l1]];
+
+			line = "" + mTR[mTRRow[l1]][0] + mBL[0][mBRCol[l1]];
 		}
 		try
 		{
@@ -145,21 +173,6 @@ public class EncryptFive implements Runnable
 
 	}// run()
 
-	char[] tString;
-
-	int mTRRow[] = new int['Z' + 1];
-	int mTRCol[] = new int['Z' + 1];
-	int mBLRow[] = new int['Z' + 1];
-	int mBRCol[] = new int['Z' + 1];
-
-	char l1 = 0, l2 = 0;
-	int l1p = 0, l2p = 0;
-	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-	
-	boolean letterFordward = false;
-
-	String stringOut;
-
 	private void encryptLine(String lineEncryptp)
 	{
 		if (l1 != 0)
@@ -173,23 +186,28 @@ public class EncryptFive implements Runnable
 		}
 		tranformedText = new char[lineEncryptp.length() + 1];
 
-		lineEncryptp = lineEncryptp.toUpperCase();
+		// lineEncryptp = lineEncryptp.toUpperCase();
 
 		for (int position = 0; position < lineEncryptp.length(); position++)
 		{
 
-			
-			
-			if (lineEncryptp.charAt(position) >= 'A' && lineEncryptp.charAt(position) <= 'Z')
+			tCharIn = lineEncryptp.charAt(position);
+
+			if (tCharIn >= 'a' && tCharIn <= 'z')
+			{
+				tCharIn = (char) (((int) tCharIn) - 32);
+			}
+
+			if (tCharIn >= 'A' && tCharIn <= 'Z')
 			{
 				if (l1 == 0)
 				{
-					if (lineEncryptp.charAt(position) == 'J')
+					if (tCharIn == 'J')
 					{
 						l1 = 'I';
 					} else
 					{
-						l1 = lineEncryptp.charAt(position);
+						l1 = tCharIn;
 					}
 					if (!letterFordward)
 					{
@@ -201,19 +219,21 @@ public class EncryptFive implements Runnable
 
 				} else if (l2 == 0)
 				{
-					if (lineEncryptp.charAt(position) == 'J')
+					if (tCharIn == 'J')
 					{
 						l2 = 'I';
 
 					} else
 					{
-						l2 = lineEncryptp.charAt(position);
+						l2 = tCharIn;
 					}
-					  if (!letterFordward) {
-                          l2p = position;
-                      } else {
-                          l2p = position + 1;
-                      }
+					if (!letterFordward)
+					{
+						l2p = position;
+					} else
+					{
+						l2p = position + 1;
+					}
 
 					tranformedText[l1p] = mTR[mTRRow[l1]][mTRCol[l2]];
 
@@ -223,12 +243,14 @@ public class EncryptFive implements Runnable
 				}
 			} else
 			{
-				 if (!letterFordward) {
-                     // System.out.println(position);
-					 tranformedText[position] = ' ';
-                 } else {
-                	 tranformedText[position + 1] = ' ';
-                 }
+				if (!letterFordward)
+				{
+					// System.out.println(position);
+					tranformedText[position] = ' ';
+				} else
+				{
+					tranformedText[position + 1] = ' ';
+				}
 
 			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
 		}
@@ -248,9 +270,9 @@ public class EncryptFive implements Runnable
 	private void createEncMatrices()
 	{
 
-		for (x2 = 0; x2 < 5; x2++)
+		for (x2 = 0; x2 < MATRIX_SIZE; x2++)
 		{
-			for (x1 = 0; x1 < 5; x1++)
+			for (x1 = 0; x1 < MATRIX_SIZE; x1++)
 			{
 				mBRCol[mTL[x1][x2]] = x2;
 				mTRRow[mTL[x1][x2]] = x1;
@@ -258,9 +280,9 @@ public class EncryptFive implements Runnable
 			}
 		}
 
-		for (y2 = 0; y2 < 5; y2++)
+		for (y2 = 0; y2 < MATRIX_SIZE; y2++)
 		{
-			for (y1 = 0; y1 < 5; y1++)
+			for (y1 = 0; y1 < MATRIX_SIZE; y1++)
 			{
 				mBLRow[mTL[y1][y2]] = y1;
 				mTRCol[mTL[y1][y2]] = y2;

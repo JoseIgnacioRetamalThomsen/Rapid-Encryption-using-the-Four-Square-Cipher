@@ -23,7 +23,7 @@ public class WriteFile implements Runnable
 
 	Interceptor interceptor;
 
-	WriteFile(BlockingQueue<CharSequence> queueP)
+	public WriteFile(BlockingQueue<CharSequence> queueP)
 
 	{
 
@@ -57,6 +57,7 @@ public class WriteFile implements Runnable
 				if (!(line instanceof Poison ))
 				{
 					outputFile.println(line);
+				//	outputFile.write(line.toString().toCharArray());
 
 				} else
 				{
