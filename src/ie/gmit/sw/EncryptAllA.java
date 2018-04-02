@@ -1,6 +1,8 @@
 package ie.gmit.sw;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,7 +23,15 @@ public class EncryptAllA
 		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue <CharSequence>(1000);
 		BlockingQueue<CharSequence> qEncryptToWrite = new LinkedBlockingQueue <CharSequence>(1000);
 
-		KeyManagerA keyManager = new KeyManagerA();
+		KeyManagerA keyManager = null;
+		try
+		{
+			keyManager = new KeyManagerA(new Scanner(new File("x")));
+		} catch (FileNotFoundException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		Interceptor interceptor = new Interceptor();
 

@@ -1,6 +1,9 @@
 package ie.gmit.sw;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class KeyManagerA
@@ -11,11 +14,14 @@ public class KeyManagerA
 	char[][] mTR; // Top right key.
 	char[][] mBL; // Bottom left key.
 
+	
+	Scanner scanner;
 	/*
 	 * Constructor
 	 */
-	public KeyManagerA()
+	public KeyManagerA(Scanner s)
 	{
+		scanner =s;
 
 		mBL = new char[][]
 		{
@@ -45,6 +51,13 @@ public class KeyManagerA
 	/*
 	 * Set Keys.
 	 */
+	
+	public void setKeys(char[] tR, char[] bL )
+	{
+		setKeyTR(tR);
+		setKeyBL(bL);
+		
+	}
 
 	// Top right key.
 	public boolean setKeyTR(char[] key)
@@ -157,9 +170,11 @@ public class KeyManagerA
 	//Used for input both keys.
 	private char[] inputKeyAll()
 	{
+		//Scanner scanner1 = new Scanner(System.in);
+	
 		final int MATRIX_SIZE = 25;
 
-		Scanner scanner = new Scanner(System.in);
+		//Scanner scanner = new Scanner(System.in);
 
 		String keyInput = new String();
 
@@ -193,16 +208,19 @@ public class KeyManagerA
 					{
 						if (inputKeySet.add(tempCharacter))
 						{
+							
 							// all good
 						} else
 						{
 							System.out.println("the character " + tempCharacter + " is repeted, please try again.\n");
+							
 							break;
 						}
 
-					} else
+					} else 
 					{
 						System.out.println("the key contains invalid characters, please try again.\n");
+						
 						break;
 						
 					}//if (keyInput.charAt(i) >= 'A' && keyInput.charAt(i) <= 'Z' && keyInput.charAt(i) != 'J')
@@ -215,28 +233,62 @@ public class KeyManagerA
 							
 		} // while (!isKeyGood)
 
-		Character c[] = inputKeySet.toArray(new Character[0]);
+		//Character c[] = inputKeySet.toArray(new Character[0]);
 
-		scanner.close();
+	//	scanner.close();
 
 		return keyInput.toCharArray();
 		
 	}// inputKey()
 
+	
+	public void generateRandomKeys()
+	{
+		List<Character> mBLElements = new LinkedList<Character>();
+		List<Character> mTRElements = new LinkedList<Character>();
+
+		for (int i = 65; i <= 90; i++)
+		{
+			if(i==74) continue;
+			mTRElements.add((char) (i));
+			mBLElements.add((char) (i));
+		}
+
+	
+		Collections.shuffle(mTRElements);
+		Collections.shuffle(mBLElements);
+	
+		Character[] cTR = mTRElements.toArray(new Character[0]);
+		Character[] cBL = mBLElements.toArray(new Character[0]);
+		
+		char[] tR = new char[25];
+		int i =0;
+		for(Character ch: cTR)
+		{
+			tR[i++] = (char)ch;
+		}
+		
+		char[] bL = new char[25];
+		
+		 i =0;
+		for(Character ch: cBL)
+		{
+			bL[i++] = (char)ch;
+		}
+		setKeys(tR, bL);
+	
+		
+	}//generateRandomKeys()
+	
 	public static void main(String[] args)
 	{
 		/*
 		 * Top right key: ZGPTFOIHMUWDRCNYKEQAXVSBL 
 		 * Bottom left key: MFNBDCRHSAXYOGVITUEWLQZKP
 		 */
-		KeyManagerA t = new KeyManagerA();
+	//	KeyManagerA t = new KeyManagerA();
 
-		t.displayTRKey();
-		t.displayBLKey();
-
-		t.inputTRKey();
-
-		t.displayTRKey();
+		
 
 	}
 

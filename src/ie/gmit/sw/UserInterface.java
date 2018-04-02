@@ -22,23 +22,23 @@ public class UserInterface
 	final static String simpleMatrixMenuHeader1 = " Four-Square Cipher .Four 5x5 matrices.";
 	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
 	final static String encryptionAMenuOptions[] =
-	{ "Input Keys in console.", "Input keys using file.", "Random generate keyy.", "Use last keys.",
+	{ "Use actuals keys.", "Input new keys.", "Random generate keyy.", "Use last keys.",
 			"Back to main menu." };
 
-	// En/De objects
-	static Encryption5x5 encrypt5 = new Encryption5x5();
-	
-	
-	
-	static KeyManagerA keyManagerA = new KeyManagerA();
-	static FileManager fileManagerA = new FileManager();
-	
-	static EncryptAllA  encryptAllA = new EncryptAllA();
-
 	// file variable
-	Scanner scanner;
+	 Scanner scanner 	 = new Scanner(System.in);
+	
+	// En/De objects
+	 Encryption5x5 encrypt5 = new Encryption5x5();
 
-	public static void start()
+	 KeyManagerA keyManagerA = new KeyManagerA(scanner);
+	 FileManager fileManagerA = new FileManager();
+
+	 EncryptAllA encryptAllA = new EncryptAllA();
+
+
+
+	public  void start()
 	{
 		// print header
 		System.out.printf("%80s%n",
@@ -47,43 +47,44 @@ public class UserInterface
 		System.out.printf("|     %-70s     |%n", mainMenuHeader2);
 		System.out.printf("%80s%n",
 				"*================================================================================*\n\n");
-		
+
 		boolean isProgramRunning = true;
 
 		while (isProgramRunning)
 		{
-			
+			isProgramRunning = mainMenu(inputMenu(1, mainMenuOptions));
 
-			isProgramRunning = mainMenu( inputMenu(1, mainMenuOptions));
+		} // while (isProgramRunning)
 
-			
-		}
-		
-	}//start()
+	}// start()
 
-	
-	private static boolean mainMenu(int menuOption)
+	private  boolean mainMenu(int menuOption)
 	{
-		
+
 		switch (menuOption)
 		{
 		case 1:
+		
 			encryptionAMenu();
 			break;
+		
 		case 2:
+
 			System.out.println("2");
 			break;
+
 		case 3:
-			
+
 			System.out.println("Program terminated.");
 			return false;
-			
-		}
+
+		}// switch (menuOption)
+
 		return true;
-	}
-	
-	
-	private static void encryptionAMenu()
+
+	}// mainMenu(int menuOption)
+
+	private  void encryptionAMenu()
 	{
 		int menuOption;
 		boolean isOptionRunning = true;
@@ -99,26 +100,26 @@ public class UserInterface
 			System.out.printf("%80s%n",
 					"*--------------------------------------------------------------------------------*");
 
-			
-			System.out.println();
+			System.out.println("Actuals keys:");
 			keyManagerA.displayTRKey();
 			keyManagerA.displayBLKey();
 			System.out.println();
-			
-			
+
 			menuOption = inputMenu(1, encryptionAMenuOptions);
 
 			switch (menuOption)
 			{
+			//"Use actuals keys.
 			case 1:
+				/*
 				System.out.println("Key 1:(Top Right Matrix):");
 
 				encrypt5.printKey();
-				
+
 				encrypt5.setKeyTR(inputKey25());
 
 				encrypt5.printKey();
-				
+
 				System.out.println("Key 2:(Botton Left Matrix)");
 
 				encrypt5.setKeyBL(inputKey25());
@@ -137,25 +138,31 @@ public class UserInterface
 					}
 
 				} while (fileName == null);
-				
-				
-				 long startTime = System.nanoTime();
-				
-				encrypt5.encrypt5_5(fileName, fileName+".en5");
 
-				
-				
-				long startTimef = System.nanoTime(); 
-				
-				
-				System.out.println("Congratulitions you file have been sucessfuly encrypted in " + ((long)(startTimef - startTime)/(Math.pow(10, 9))) + " seconds.");
-				System.out.println("time="+ (long)(startTimef - startTime));
-				
-				
+				long startTime = System.nanoTime();
+
+				encrypt5.encrypt5_5(fileName, fileName + ".en5");
+
+				long startTimef = System.nanoTime();
+
+				System.out.println("Congratulitions you file have been sucessfuly encrypted in "
+						+ ((long) (startTimef - startTime) / (Math.pow(10, 9))) + " seconds.");
+				System.out.println("time=" + (long) (startTimef - startTime));
+*/
 				break;
 			case 2:
+				scanner.nextLine();
+				
+				keyManagerA.inputTRKey();
+				keyManagerA.inputBLKey();
+				
 				break;
+				
+			//random key
 			case 3:
+				
+				keyManagerA.generateRandomKeys();
+				
 				break;
 			case 4:
 				break;
@@ -164,7 +171,7 @@ public class UserInterface
 				break;
 			}
 
-		} // while (isProgramRunning)
+		} // while (isOptionRunning)
 	}
 
 	/*
@@ -172,13 +179,13 @@ public class UserInterface
 	 * first option which will be increase by one until the length of the array
 	 * options
 	 */
-	private static int inputMenu(int lower, String[] options)
+	private  int inputMenu(int lower, String[] options)
 	{
-		Scanner scanner;
+		
 
 		int inputNumber = 0;
 		boolean isInputRigth = true;
-		scanner = new Scanner(System.in);
+	
 		StringBuilder menuOptions = new StringBuilder();
 
 		// int number = scanner.nextInt();
@@ -195,6 +202,7 @@ public class UserInterface
 		--index;
 		System.out.println(menuOptions);
 		System.out.print("Please enter Choice and press enter:");
+
 		while (isInputRigth)
 		{
 			try
@@ -224,15 +232,16 @@ public class UserInterface
 				isInputRigth = false;
 			}
 
-		}
+		} // while (isInputRigth)
 
+		//scanner.close();
 		return inputNumber;
 	}
-
+/*
 	private static char[] inputKey25()
 	{
 		Scanner scanner;
-		
+
 		final int MATRIX_SIZE = 25;
 
 		String keyInput = new String();
@@ -292,27 +301,29 @@ public class UserInterface
 
 		} // while (!isKeyGood)
 
-		for(Character ca:inputKeySet)
+		for (Character ca : inputKeySet)
 		{
 			System.out.println(ca);
 		}
-		
+
 		Character c[] = inputKeySet.toArray(new Character[0]);
-		
-		for(Character ca:c)
+
+		for (Character ca : c)
 		{
 			System.out.println(ca);
 		}
-		
+
 		return keyInput.toCharArray();
 	}
-
+*/
+	
+	/*
 	private static String inputFileName()
 	{
 		Scanner scanner;
 		String input;
 
-		//Pattern pattern = Pattern.compile("\\w[.][a-zA-Z][a-zA-Z][a-zA-Z]");
+		// Pattern pattern = Pattern.compile("\\w[.][a-zA-Z][a-zA-Z][a-zA-Z]");
 
 		scanner = new Scanner(System.in);
 
@@ -328,22 +339,23 @@ public class UserInterface
 		}
 
 	}
-
+*/
+	/*
 	private static boolean checkIfFileExist(String fileName, boolean relativePath)
 	{
 		File file = new File(fileName);
 
 		return file.isFile();
 	}
-
+*/
 	public static void main(String[] args)
 	{
-	
+
 		// new UserInterface().MainMenu();
 		UserInterface u = new UserInterface();
 		u.start();
 		// u.inputFileName();
-		//u.MainMenu();
+		// u.MainMenu();
 		// System.out.println(u.checkIfFileExist("/out8.txt", true));
 		/*
 		 * Encryption5x5 e = new Encryption5x5(); e.setKeyBL(new
