@@ -4,12 +4,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeUnit;
 /*
- * Encryption 5 matrix side A
- * Class for encryption using a 5 side matrix 
- * Line by line , if a line have a odd number of 
- * characters the character is pass over to the next line
- * if the last line have a odd number of characters the last character 
- * will be encrypted with the first element in the matrix (row=0, col=0).
+  *Encryption using a 5 side matrix 
+ * Line by line , if a line have a odd number of characters the character is pass over to the next line
+ * if the last line have a odd number of characters the last character  will be encrypted with the first 
+ * element in the matrix (row=0, col=0).
  */
 
 public class EncryptionA implements Runnable
@@ -23,8 +21,8 @@ public class EncryptionA implements Runnable
 
 	Interceptor interceptor;
 
-	/**** Encryption variables ******/
-	// Constants
+	
+	
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
 	final char[][] mTL =
 	{
@@ -38,6 +36,7 @@ public class EncryptionA implements Runnable
 	char[][] mTR;
 	char[][] mBL;
 
+	/**** Encryption variables ******/
 	char[] tranformedText;
 
 	char tCharIn;
@@ -68,69 +67,25 @@ public class EncryptionA implements Runnable
 		mTR = keyManagerP.mTR;
 		mBL = keyManagerP.mBL;
 
-		/*
-		 * 
-		 * mBL = new char[][] { { 'M', 'F', 'N', 'B', 'D' }, { 'C', 'R', 'H', 'S', 'A'
-		 * }, { 'X', 'Y', 'O', 'G', 'V' }, { 'I', 'T', 'U', 'E', 'W' }, { 'L', 'Q', 'Z',
-		 * 'K', 'P' } }; mTR = new char[][] { { 'Z', 'G', 'P', 'T', 'F' }, { 'O', 'I',
-		 * 'H', 'M', 'U' }, { 'W', 'D', 'R', 'C', 'N' }, { 'Y', 'K', 'E', 'Q', 'A' }, {
-		 * 'X', 'V', 'S', 'B', 'L' } };
-		 */
-	}
+	}//EncryptionA(
 
-	public void setQueues()
-	{
 
-	}
-
-	public boolean setKeyBL(char[] key)
-	{
-		if (key.length != 25)
-		{
-			return false;
-		}
-
-		int row = 0, col = 0;
-		for (Character character : key)
-		{
-			mBL[row][col++] = character;
-			if (col == MATRIX_SIZE)
-			{
-				col = 0;
-				row++;
-			}
-		}
-
-		return true;
-	}
-
-	public boolean setKeyTR(char[] key)
-	{
-		if (key.length != 25)
-		{
-			return false;
-		}
-
-		int row = 0, col = 0;
-		for (Character character : key)
-		{
-			mTR[row][col++] = character;
-			if (col == MATRIX_SIZE)
-			{
-				col = 0;
-				row++;
-			}
-		}
-		return true;
-	}
-
+	/*
+	 * Big-O: Time : O(n x m), n = average number of characters per line, m = total lines in the file.
+	 * Since the total characters in the file is equal to  (number of lines)*(average characters on each line)
+	 *  => O(n), n = number of characters in the file. 
+	 * 
+	 * Big-O: Space : O(n*m) n = average number of characters per line, m = EncryptAllA.QUEUE_SIZE = constant, so
+	 *  O(n) n = average number of characters per line.
+	 */
 	@Override
 	public void run()
 	{
 		CharSequence line = null;
 		createEncMatrices();
 
-		while (true)
+		while (true)// (O(m), m = queueIn total size what is the total lines in the input file)*(
+					// O(n) n = average of lineEncryptp.length()(average characters in each line)) = O(n*m)
 		{
 
 			try
@@ -145,7 +100,7 @@ public class EncryptionA implements Runnable
 
 			if (!(line instanceof Poison))
 			{
-				encryptLine((String) line);
+				encryptLine((String) line);// O(n) n = lineEncryptp.length()
 
 			} else
 			{
@@ -173,9 +128,18 @@ public class EncryptionA implements Runnable
 
 	}// run()
 
+	/*
+	 * Encrypt one line, if the numbers of characters is odd the extra character is
+	 * passed to the next line.
+	 */
+	/*
+	 * Big-O: Time : O(n) n = lineEncryptp.length().
+	 * 
+	 * Big-O: Space : O(n) n = lineEncryptp.length().
+	 */
 	private void encryptLine(String lineEncryptp)
 	{
-		if (l1 != 0)
+		if (l1 != 0)// O(1)
 		{
 			l1p = 0;
 			letterFordward = true;
@@ -184,15 +148,17 @@ public class EncryptionA implements Runnable
 		{
 			letterFordward = false;
 		}
-		tranformedText = new char[lineEncryptp.length() + 1];
+
+		tranformedText = new char[lineEncryptp.length() + 1];// O(1)
 
 		// lineEncryptp = lineEncryptp.toUpperCase();
 
-		for (int position = 0; position < lineEncryptp.length(); position++)
+		for (int position = 0; position < lineEncryptp.length(); position++)// O(n) n = lineEncryptp.length()
 		{
 
 			tCharIn = lineEncryptp.charAt(position);
 
+			//
 			if (tCharIn >= 'a' && tCharIn <= 'z')
 			{
 				tCharIn = (char) (((int) tCharIn) - 32);
@@ -253,24 +219,35 @@ public class EncryptionA implements Runnable
 				}
 
 			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
-		}
+
+		} // for (int position = 0; position < lineEncryptp.length(); position++)
+
 		try
 		{
 
 			queueOut.put(new String(tranformedText));
-			// queueOut.put("w");
 
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
 
+	}// encryptLine(String lineEncryptp)
+
+	/*
+	 * Create matrices for encryption
+	 */
+	/*
+	 * Big-O: Time : O(n^2) n = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 * 
+	 * Big-O: Space : O(n), n = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 */
 	private void createEncMatrices()
 	{
 
-		for (x2 = 0; x2 < MATRIX_SIZE; x2++)
+		for (x2 = 0; x2 < MATRIX_SIZE; x2++)// Time O(n^2) n= MATRIX_SIZE but with MATRIX_SIZE=5 => O(1)(run 25 times),
+											// same for space.
 		{
 			for (x1 = 0; x1 < MATRIX_SIZE; x1++)
 			{
@@ -280,7 +257,8 @@ public class EncryptionA implements Runnable
 			}
 		}
 
-		for (y2 = 0; y2 < MATRIX_SIZE; y2++)
+		for (y2 = 0; y2 < MATRIX_SIZE; y2++)// Time O(n^2) n= MATRIX_SIZE but with MATRIX_SIZE=5 => O(1)(run 25 times),
+											// same for space.
 		{
 			for (y1 = 0; y1 < MATRIX_SIZE; y1++)
 			{

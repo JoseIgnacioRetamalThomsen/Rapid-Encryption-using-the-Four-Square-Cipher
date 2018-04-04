@@ -21,11 +21,19 @@ public class EncryptAllA
 		this.fileManager = fileManager;
 	}
 
+	
+	/*
+	 * Big-O: Time : O(n), n = number of characters in the file. Because is O(n + 2*n1) where n1 = number of lines in file.
+	 * because n = c * n1, c= constant (the total number of characters in the file is equal to the total number of lines multiply for a constant) so
+	 * O(n + 2*n1)=O(n+2cn) = O((2c+1)n = O(Cn) = O(n) where C = constant = 2c +1
+	 * 
+	 * Big-O: Space : O(n) n = average number of characters per line . because O(1)+O(n)+O(1) = O(n).
+	 */
 	public void encryptOne(Boolean isFromUrl)
 	{
 
-		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue<CharSequence>(1000);
-		BlockingQueue<CharSequence> qEncryptToWrite = new LinkedBlockingQueue<CharSequence>(1000);
+		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue<CharSequence>(QUEUE_SIZE);
+		BlockingQueue<CharSequence> qEncryptToWrite = new LinkedBlockingQueue<CharSequence>(QUEUE_SIZE);
 
 		Interceptor interceptor = new Interceptor();
 
@@ -46,14 +54,8 @@ public class EncryptAllA
 		}
 		// parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt",
 		// true);
-		try
-		{
-			writeFile.inputFileName(fileManager.outputFileName);
-		} catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		writeFile.inputFileName(fileManager.outputFileName);
 
 		Thread t1 = new Thread(parseFile);
 
@@ -61,16 +63,16 @@ public class EncryptAllA
 
 		Thread t3 = new Thread(writeFile);
 
-		t1.start();
-		t2.start();
-		t3.start();
+		t1.start();//Time:  O(n1), n1 = number of lines in file. Space : O(1)
+		t2.start();//Time:  O(n), n = number of characters in the file. Space : O(n)  n = average number of characters per line.
+		t3.start();//Time:  O(n1), n1 = number of lines in file. Space : O(1)
 
 		try
 		{
 			t3.join();
 		} catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		interceptor.displayTimeMS();
@@ -92,14 +94,8 @@ public class EncryptAllA
 		parseFile.setFileName(fileManager.inputFileName, false);
 		// parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt",
 		// true);
-		try
-		{
-			writeFile.inputFileName(fileManager.outputFileName);
-		} catch (FileNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		writeFile.inputFileName(fileManager.outputFileName);
 
 		Thread t1 = new Thread(parseFile);
 

@@ -27,6 +27,11 @@ public class ParseFile implements Runnable
 	 * MUST BE ALWAYS CALL BEFORE run();
 	 * 
 	 */
+	/*
+	 * Big-O: Time : O(1) 
+	 * 
+	 * Big-O: Space : O(1) .
+	 */
 	public void setFileName(String pathOrURL, boolean isURL)
 	{
 		try
@@ -64,7 +69,11 @@ public class ParseFile implements Runnable
 	 *  Read line and put it into the BlockingQueue
 	 *  inputFilename() must be be call before.
 	 */
-	
+	/*
+	 * Big-O: Time : O(n) n = number of lines in file.
+	 * 
+	 * Big-O: Space : O(n) n = queue size = EncryptAllA.QUEUE_SIZE = cons so O(1).
+	 */
 	@Override
 	public void run()
 	{
@@ -98,52 +107,10 @@ public class ParseFile implements Runnable
 		{
 		
 			e.printStackTrace();
-		}finally
-		{
-			//here for no risk and endless loop;
-			interceptor.parseDone();
 			
-		}
+		}//try catch
 		
 		
-	}
+	}//public void run()
 
-	/*
-	 * private StringBuilder parsedFile;
-	 * 
-	 * public ParseFile() { super(); this.parsedFile = new StringBuilder(); }
-	 * 
-	 * public StringBuilder getParseFile() { return parsedFile; }
-	 * 
-	 * public void setParseFileObject(StringBuilder parseFile) { this.parsedFile =
-	 * parseFile; }
-	 * 
-	 * public void setParseFilePointer(StringBuilder sb) { sb = parsedFile; }
-	 * 
-	 * public void clearParseFile() { this.parsedFile = new StringBuilder(); }
-	 * 
-	 * public void parseFile(String pathOrURL, boolean isUrl) throws IOException {
-	 * String line; BufferedReader fileIn; int counter = 0; if (isUrl) { URL url =
-	 * new URL(pathOrURL); fileIn = new BufferedReader(new
-	 * InputStreamReader(url.openStream())); while ((line = fileIn.readLine()) !=
-	 * null) { System.out.println(line); System.out.println(counter++);
-	 * 
-	 * }
-	 * 
-	 * } else {
-	 * 
-	 * fileIn = new BufferedReader(new InputStreamReader(new
-	 * FileInputStream(pathOrURL)));
-	 * 
-	 * while ((line = fileIn.readLine()) != null) { System.out.println(line);
-	 * System.out.println(counter++);
-	 * 
-	 * }
-	 * 
-	 * } }
-	 * 
-	 * public static void main(String[] args) throws IOException {
-	 * System.out.println("here"); new
-	 * ParseFile().parseFile("warandpeace-leotolstoy.txt", false); }
-	 */
-}
+}// class ParseFile 

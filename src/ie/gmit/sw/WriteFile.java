@@ -4,7 +4,6 @@
  * bot key MFNBDCRHSAXYOGVITUEWLQZKP
  */
 
-
 package ie.gmit.sw;
 
 import java.io.File;
@@ -23,61 +22,74 @@ public class WriteFile implements Runnable
 
 	Interceptor interceptor;
 
-	public WriteFile(BlockingQueue<CharSequence> queueP)
-
+	public WriteFile(BlockingQueue<CharSequence> queue)
 	{
 
-		queue = queueP;
+		this.queue = queue;
 
-	}
+	}//WriteFile(BlockingQueue<CharSequence> queueP)
 
-	public void inputFileName(String fileName) throws FileNotFoundException
+	
+	/*
+	 * Big-O: Time : O(1) 
+	 * 
+	 * Big-O: Space : O(1) 
+	 */
+	public void inputFileName(String fileName)
 	{
-		outputFile = new PrintWriter(new FileOutputStream(new File(fileName), true));
-	}
+		try
+		{
+			outputFile = new PrintWriter(new FileOutputStream(new File(fileName), true));
+		} catch (FileNotFoundException e)
+		{
+
+			e.printStackTrace();
+
+		} // try catch
+
+	}// inputFileName(String fileName)
 
 	int countT = 0;
 
+	/*
+	 * Big-O: Time : O(n) n = number of lines in file.
+	 * 
+	 * Big-O: Space : O(n) n = queue size = EncryptAllA.QUEUE_SIZE = cons so O(1).
+	 */
 	@Override
 	public void run()
 	{
 		CharSequence line;
 		try
-
 		{
 
 			while (true)
-
 			{
-				// System.out.println(countT++ +" on run
-				// WriteFile"+!interceptor.isEncryptionDone );
-
 				line = queue.take();
-				
-				if (!(line instanceof Poison ))
+
+				if (!(line instanceof Poison))
 				{
 					outputFile.println(line);
-				//	outputFile.write(line.toString().toCharArray());
 
 				} else
 				{
 					break;
+
 				}
 
-			}
+			} // while (true)
 
 			outputFile.close();
 			interceptor.stopTime();
 			interceptor.displayTimeMS();
+
 		} catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
-		} finally
-		{
-			
-		}
 
-	}
+		} // try catch
 
-}
+	}// run()
+
+}// WriteFile

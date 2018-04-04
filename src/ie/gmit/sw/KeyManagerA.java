@@ -208,7 +208,13 @@ public class KeyManagerA
 	}// inputBLKey()
 
 	// Used for input both keys.
-	private char[] inputKeyAll()
+	/*
+	 * Big-O: Time : O(1) for each time the inside  while loop run.
+	 *
+	 * 
+	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time complexity apply.
+	 */
+		private char[] inputKeyAll()
 	{
 		// Scanner scanner1 = new Scanner(System.in);
 
@@ -224,7 +230,7 @@ public class KeyManagerA
 
 		Character tempCharacter;
 
-		while (!isKeyGood)
+		while (!isKeyGood)//O(1) (O(n) , n= keyInput.length() but n = 25)
 		{
 			System.out.print("Please enter the 25 uniques  characters  key and then press enter:");
 			keyInput = scanner.nextLine().toUpperCase().trim();
@@ -240,7 +246,7 @@ public class KeyManagerA
 
 				inputKeySet = new HashSet<Character>();
 
-				for (int i = 0; i < keyInput.length(); i++)
+				for (int i = 0; i < keyInput.length(); i++)//O(1) (O(n) , n= keyInput.length() but n = 25)
 				{
 					tempCharacter = new Character(keyInput.charAt(i));
 
