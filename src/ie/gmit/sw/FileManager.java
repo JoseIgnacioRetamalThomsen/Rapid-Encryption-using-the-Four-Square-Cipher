@@ -1,6 +1,8 @@
 package ie.gmit.sw;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Scanner;
 
 public class FileManager
@@ -8,18 +10,67 @@ public class FileManager
 
 	public String inputFileName;
 	public String outputFileName;
+	public String urlFileName;
 
 	public File inputFile;
 	public File outputFile;
 
+	private Scanner scanner;
+
+	public FileManager(Scanner scanner)
+	{
+		this.scanner = scanner;
+	}
+
 	/*
 	 * Display
 	 */
+	public void displayUrl()
+	{
+		
+		System.out.println(urlFileName);
+	}
+	
+	public String getInputFileName()
+	{
+		return inputFileName;
+	}
+
+	public void setInputFileName(String inputFileName)
+	{
+		this.inputFileName = inputFileName;
+	}
+
+	public String getOutputFileName()
+	{
+		return outputFileName;
+	}
+
+	public void setOutputFileName(String outputFileName)
+	{
+		this.outputFileName = outputFileName;
+	}
+
+	public String getUrlFileName()
+	{
+		return urlFileName;
+	}
+
+	public void setUrlFileName(String urlFileName)
+	{
+		this.urlFileName = urlFileName;
+	}
+
 	public void displayFileName()
 	{
 		System.out.println(inputFileName);
 	}
 
+	
+	public void displayOutputFileName()
+	{
+		System.out.println(outputFileName);
+	}
 	/*
 	 * Input File Name
 	 */
@@ -27,10 +78,10 @@ public class FileManager
 	// In file
 	public void inInputFileName()
 	{
-		Scanner scanner;
+		
 		String input;
 
-		scanner = new Scanner(System.in);
+	//	scanner = new Scanner(System.in);
 
 		System.out.print("Please enter the file name: ");
 		input = scanner.nextLine();
@@ -46,7 +97,7 @@ public class FileManager
 
 		} // while (!checkIfFileExist(input, true))
 
-		scanner.close();
+		
 
 		inputFileName = input;
 
@@ -55,10 +106,10 @@ public class FileManager
 	// out file
 	public void inOutputFileName()
 	{
-		Scanner scanner;
+		//Scanner scanner;
 		String input;
 
-		scanner = new Scanner(System.in);
+	//	scanner = new Scanner(System.in);
 
 		System.out.print("Please enter the new file name: ");
 		input = scanner.nextLine();
@@ -66,18 +117,17 @@ public class FileManager
 		while (checkIfFileExist(input, true))
 		{
 
-			System.out.println(
-					"That file exists please select another name for the new file.");
+			System.out.println("That file exists please select another name for the new file.");
 
 			System.out.print("Please enter the new file name: ");
 			input = scanner.nextLine();
 
 		} // while (!checkIfFileExist(input, true))
 
-		scanner.close();
+		
 
 		outputFileName = input;
-		
+
 	}// inOutputFileName()
 
 	// method for check if a file exist
@@ -89,13 +139,70 @@ public class FileManager
 
 	}// checkIfFileExist(String fileName, boolean relativePath)
 
+	
+	@SuppressWarnings("unused")
+	public boolean checkIfUrlExist(String urlString)
+	{
+		try
+		{
+			URL url = new URL(urlString);
+		} catch (Exception e)
+		{
+			
+			//e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	//clear name 
+	public void clear()
+	{
+		this.inputFile = null;
+		this.outputFile = null;
+		this.inputFileName=null;
+		this.outputFileName=null;
+	}
+	
 	public static void main(String[] args)
 	{
-		FileManager f = new FileManager();
-		//f.inInputFileName();
+		Scanner scanner=new Scanner(System.in);
+		FileManager f = new FileManager(scanner);
+		// f.inInputFileName();
 
-		//f.displayFileName();
-		f.inOutputFileName();
-		
+		// f.displayFileName();
+	//	f.inOutputFileName();
+		System.out.println(f.checkIfUrlExist("http://www.dasfds.ft.3423423423.com"));
+		f.inputURL();
+		System.out.println(f.urlFileName);
+
 	}
+
+	public void inputURL()
+	{
+		String input;
+
+		
+		//scanner = new Scanner(System.in);
+
+		System.out.print("Please enter the file URL: ");
+		input = scanner.nextLine().trim();
+		
+		
+		
+		while (!checkIfUrlExist(input))
+		{
+
+			System.out.println("That URN do not exists please try again.");
+
+			System.out.print("Please enter the file URL: ");
+			input = scanner.nextLine();
+
+		} // while (!checkIfFileExist(input, true))
+		
+		
+		urlFileName = input;
+	}
+
+	
 }

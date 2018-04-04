@@ -30,12 +30,15 @@ public class DecryptA implements Runnable
 	/*
 	 * Constructor
 	 */
-	DecryptA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP)
+	DecryptA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP, KeyManagerA keyManagerP)
 	{
 		queueIn = queueInP;
 
 		queueOut = queueOutP;
-
+		
+		this.mTR = keyManagerP.mTR;
+		this.mBL = keyManagerP.mBL;
+/*
 		mBL = new char[][]
 		{
 				{ 'M', 'F', 'N', 'B', 'D' },
@@ -50,8 +53,9 @@ public class DecryptA implements Runnable
 				{ 'W', 'D', 'R', 'C', 'N' },
 				{ 'Y', 'K', 'E', 'Q', 'A' },
 				{ 'X', 'V', 'S', 'B', 'L' } };
+	
+*/
 	}
-
 	public boolean setKeyBL(char[] key)
 	{
 		if (key.length != 25)

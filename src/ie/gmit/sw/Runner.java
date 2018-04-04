@@ -27,8 +27,8 @@ public class Runner
 			System.out.println(c);
 		}*/
 		
-		EncryptAllA a = new EncryptAllA();
-		a.encryptOne();
+		//EncryptAllA a = new EncryptAllA();
+	//	a.encryptOne();
 		
 		
 		//UserInterface.start();
@@ -36,3 +36,5 @@ public class Runner
 	}
 
 }
+
+//http://www.textfiles.com/etext/FICTION/

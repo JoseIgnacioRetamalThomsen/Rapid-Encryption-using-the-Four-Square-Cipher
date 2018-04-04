@@ -5,8 +5,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 
-public class Encrypt
+public class Encrypt<T>
 {
+	
+	
 /*
 	public static void encryptOne()
 	{
@@ -54,7 +56,7 @@ public class Encrypt
 		interceptor.displayTimeMS();
 	}
 	*/
-
+/*
 	public static void decryptOne()
 	{
 		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue <CharSequence>(1000);
@@ -68,7 +70,7 @@ public class Encrypt
 		parseFile.interceptor = encryptFile.interceptor = writeFile.interceptor = interceptor;
 
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.getFileName("d7.txt", false);
+		parseFile.setFileName("d7.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
@@ -122,7 +124,7 @@ public class Encrypt
 		encryptFile.displayKeys();
 		
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.getFileName("t.txt", false);
+		parseFile.setFileName("t.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
@@ -172,7 +174,7 @@ public class Encrypt
 		encryptFile.readKeysFromFile();
 		encryptFile.displayKeys();
 		//parseFile.inputFileName("warandPeace-leotolstoy.txt", false);
-		parseFile.getFileName("t1.txt", false);
+		parseFile.setFileName("t1.txt", false);
 		//parseFile.inputFileName("http://www.textfiles.com/etext/FICTION/80day10.txt", true);
 		try
 		{
@@ -203,5 +205,5 @@ public class Encrypt
 			e.printStackTrace();
 		}
 		interceptor.displayTimeMS();
-	}
+	}*/
 }
