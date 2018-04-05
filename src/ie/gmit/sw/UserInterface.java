@@ -30,8 +30,7 @@ public class UserInterface
 	// file variable
 	Scanner scanner = new Scanner(System.in);
 
-	// En/De objects
-	Encryption5x5 encrypt5 = new Encryption5x5();
+	
 
 	KeyManagerA keyManagerA = new KeyManagerA(scanner);
 	FileManager fileManagerA = new FileManager(scanner);

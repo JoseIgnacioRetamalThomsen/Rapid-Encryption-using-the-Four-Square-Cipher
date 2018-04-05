@@ -14,7 +14,7 @@ public class ParseFile implements Runnable
 
 	String line;
 	
-	Interceptor interceptor;
+	
 	
 	ParseFile(BlockingQueue<CharSequence> queueP)
 	{
@@ -72,12 +72,12 @@ public class ParseFile implements Runnable
 	/*
 	 * Big-O: Time : O(n) n = number of lines in file.
 	 * 
-	 * Big-O: Space : O(n) n = queue size = EncryptAllA.QUEUE_SIZE = cons so O(1).
+	 * Big-O: Space : O(n) n = number of average characters per line.
 	 */
 	@Override
 	public void run()
 	{
-		interceptor.startTime();
+		
 		try
 		{
 			while ((line = fileIn.readLine()) != null)

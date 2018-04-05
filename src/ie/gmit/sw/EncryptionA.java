@@ -19,10 +19,6 @@ public class EncryptionA implements Runnable
 
 	private KeyManagerA keyManager;
 
-	Interceptor interceptor;
-
-	
-	
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
 	final char[][] mTL =
 	{
@@ -67,16 +63,17 @@ public class EncryptionA implements Runnable
 		mTR = keyManagerP.mTR;
 		mBL = keyManagerP.mBL;
 
-	}//EncryptionA(
-
+	}// EncryptionA(
 
 	/*
-	 * Big-O: Time : O(n x m), n = average number of characters per line, m = total lines in the file.
-	 * Since the total characters in the file is equal to  (number of lines)*(average characters on each line)
-	 *  => O(n), n = number of characters in the file. 
+	 * Big-O: Time : O(n x m), n = average number of characters per line, m = total
+	 * lines in the file. Since the total characters in the file is equal to (number
+	 * of lines)*(average characters on each line) => O(n), n = number of characters
+	 * in the file.
 	 * 
-	 * Big-O: Space : O(n*m) n = average number of characters per line, m = EncryptAllA.QUEUE_SIZE = constant, so
-	 *  O(n) n = average number of characters per line.
+	 * Big-O: Space : O(n*m) n = average number of characters per line, m =
+	 * EncryptAllA.QUEUE_SIZE = constant, so O(n) n = average number of characters
+	 * per line.
 	 */
 	@Override
 	public void run()
@@ -85,7 +82,8 @@ public class EncryptionA implements Runnable
 		createEncMatrices();
 
 		while (true)// (O(m), m = queueIn total size what is the total lines in the input file)*(
-					// O(n) n = average of lineEncryptp.length()(average characters in each line)) = O(n*m)
+					// O(n) n = average of lineEncryptp.length()(average characters in each line)) =
+					// O(n*m)
 		{
 
 			try

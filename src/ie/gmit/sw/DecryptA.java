@@ -7,7 +7,7 @@ public class DecryptA implements Runnable
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
 
-	Interceptor interceptor;
+	
 
 	/**** Encryption variables ******/
 	// Constants

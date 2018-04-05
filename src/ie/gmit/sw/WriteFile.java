@@ -20,7 +20,7 @@ public class WriteFile implements Runnable
 
 	PrintWriter outputFile;
 
-	Interceptor interceptor;
+	
 
 	public WriteFile(BlockingQueue<CharSequence> queue)
 	{
@@ -80,8 +80,7 @@ public class WriteFile implements Runnable
 			} // while (true)
 
 			outputFile.close();
-			interceptor.stopTime();
-			interceptor.displayTimeMS();
+			
 
 		} catch (InterruptedException e)
 		{

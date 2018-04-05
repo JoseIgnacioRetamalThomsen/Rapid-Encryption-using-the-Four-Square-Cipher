@@ -27,10 +27,10 @@ public class FileManager
 	 */
 	public void displayUrl()
 	{
-		
+
 		System.out.println(urlFileName);
 	}
-	
+
 	public String getInputFileName()
 	{
 		return inputFileName;
@@ -66,7 +66,6 @@ public class FileManager
 		System.out.println(inputFileName);
 	}
 
-	
 	public void displayOutputFileName()
 	{
 		System.out.println(outputFileName);
@@ -78,13 +77,13 @@ public class FileManager
 	// In file
 	public void inInputFileName()
 	{
-		
+
 		String input;
 
-	//	scanner = new Scanner(System.in);
+		// scanner = new Scanner(System.in);
 
 		System.out.print("Please enter the file name: ");
-		input = scanner.nextLine();
+		input = scanner.nextLine().trim();
 
 		while (!checkIfFileExist(input, true))
 		{
@@ -93,11 +92,9 @@ public class FileManager
 					"File not found, if you are entering a relative file must be in the root foolder of the program\n anyway if we keep not finding your file please enter  the full address (eg: \" c:\\users\\desktop\\myfile.txt \")");
 
 			System.out.print("Please enter the file name: ");
-			input = scanner.nextLine();
+			input = scanner.nextLine().trim();
 
 		} // while (!checkIfFileExist(input, true))
-
-		
 
 		inputFileName = input;
 
@@ -106,13 +103,13 @@ public class FileManager
 	// out file
 	public void inOutputFileName()
 	{
-		//Scanner scanner;
+		// Scanner scanner;
 		String input;
 
-	//	scanner = new Scanner(System.in);
+		// scanner = new Scanner(System.in);
 
 		System.out.print("Please enter the new file name: ");
-		input = scanner.nextLine();
+		input = scanner.nextLine().trim();
 
 		while (checkIfFileExist(input, true))
 		{
@@ -120,11 +117,9 @@ public class FileManager
 			System.out.println("That file exists please select another name for the new file.");
 
 			System.out.print("Please enter the new file name: ");
-			input = scanner.nextLine();
+			input = scanner.nextLine().trim();
 
 		} // while (!checkIfFileExist(input, true))
-
-		
 
 		outputFileName = input;
 
@@ -139,70 +134,53 @@ public class FileManager
 
 	}// checkIfFileExist(String fileName, boolean relativePath)
 
-	
 	@SuppressWarnings("unused")
 	public boolean checkIfUrlExist(String urlString)
 	{
 		try
 		{
 			URL url = new URL(urlString);
+
 		} catch (Exception e)
 		{
-			
-			//e.printStackTrace();
 			return false;
+
 		}
 		return true;
-	}
-	
-	//clear name 
+
+	}// checkIfUrlExist(String urlString)
+
+	// clear name
 	public void clear()
 	{
 		this.inputFile = null;
 		this.outputFile = null;
-		this.inputFileName=null;
-		this.outputFileName=null;
-	}
-	
-	public static void main(String[] args)
-	{
-		Scanner scanner=new Scanner(System.in);
-		FileManager f = new FileManager(scanner);
-		// f.inInputFileName();
+		this.inputFileName = null;
+		this.outputFileName = null;
 
-		// f.displayFileName();
-	//	f.inOutputFileName();
-		System.out.println(f.checkIfUrlExist("http://www.dasfds.ft.3423423423.com"));
-		f.inputURL();
-		System.out.println(f.urlFileName);
-
-	}
+	}// clear()
 
 	public void inputURL()
 	{
 		String input;
 
-		
-		//scanner = new Scanner(System.in);
+		// scanner = new Scanner(System.in);
 
 		System.out.print("Please enter the file URL: ");
 		input = scanner.nextLine().trim();
-		
-		
-		
+
 		while (!checkIfUrlExist(input))
 		{
 
 			System.out.println("That URN do not exists please try again.");
 
 			System.out.print("Please enter the file URL: ");
-			input = scanner.nextLine();
+			input = scanner.nextLine().trim();
 
 		} // while (!checkIfFileExist(input, true))
-		
-		
-		urlFileName = input;
-	}
 
-	
-}
+		urlFileName = input;
+
+	}// inputURL()
+
+}// FileManager
