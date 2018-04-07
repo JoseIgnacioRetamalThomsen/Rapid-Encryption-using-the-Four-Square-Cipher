@@ -22,11 +22,11 @@ public class UserInterface
 	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
 	final static String encryptionAMenuOptions[] =
 	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
-			"Set output file", "Set memory constraint.", "Back to main menu." };
+			"Set output file", "Set memory constraint.", "Change Algorith.", "Back to main menu." };
 
 	final static String decryptionAMenuOptions[] =
 	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
-			"Set output file", "Set memory constraint.", "Back to main menu." };
+			"Set output file", "Set memory constraint.", "Change Algorith.", "Back to main menu." };
 
 	final static String encryptionAFileOptions[] =
 	{ "Please setup evething.", "input file ", "input file url", "output file", "back to keys." };
@@ -96,6 +96,8 @@ public class UserInterface
 		boolean isFromUrl = false;
 		boolean isSetup = false;
 
+		boolean usingAlgorithA = true;
+
 		while (isOptionRunning)
 		{
 			// print header
@@ -135,7 +137,6 @@ public class UserInterface
 					fileManagerA.displayFileName();
 				}
 			}
-			System.out.println();
 
 			System.out.print("output result to : ");
 			if (fileManagerA.getOutputFileName() == null)
@@ -148,10 +149,12 @@ public class UserInterface
 				fileManagerA.displayOutputFileName();
 				isSetup = true;
 			}
-			System.out.println();
 
 			System.out.print("Memory constraint:  ");
 			System.out.println(encryptAllA.getQueueSize());
+
+			System.out.print("Algoritm selected: ");
+			System.out.println(usingAlgorithA ? "A" : "B");
 			System.out.println();
 
 			if (isSetup)
@@ -166,8 +169,17 @@ public class UserInterface
 			// "Use actuals keys.
 			case 1:
 
-				encryptAllA.encryptA(isFromUrl);
-				fileManagerA.clear();
+				if (isSetup)
+				{
+					if (usingAlgorithA)
+						encryptAllA.encryptA(isFromUrl);
+					else
+						encryptAllA.encryptB(isFromUrl);
+
+					fileManagerA.clear();
+
+				} // if (isSetup)
+
 				break;
 
 			case 2:
@@ -211,6 +223,11 @@ public class UserInterface
 
 			case 8:
 
+				usingAlgorithA = usingAlgorithA ? false : true;
+				break;
+
+			case 9:
+
 				isOptionRunning = false;
 				fileManagerA.clear();
 				break;
@@ -228,6 +245,8 @@ public class UserInterface
 
 		boolean isFromUrl = false;
 		boolean isSetup = false;
+
+		boolean usingAlgorithA = true;
 
 		while (isOptionRunning)
 		{
@@ -268,7 +287,6 @@ public class UserInterface
 					fileManagerA.displayFileName();
 				}
 			}
-			System.out.println();
 
 			System.out.print("output result to : ");
 			if (fileManagerA.getOutputFileName() == null)
@@ -281,6 +299,9 @@ public class UserInterface
 				fileManagerA.displayOutputFileName();
 				isSetup = true;
 			}
+
+			System.out.print("Algoritm selected: ");
+			System.out.println(usingAlgorithA ? "A" : "B");
 			System.out.println();
 
 			if (isSetup)
@@ -334,6 +355,11 @@ public class UserInterface
 				break;
 
 			case 8:
+
+				usingAlgorithA = usingAlgorithA ? false : true;
+				break;
+
+			case 9:
 
 				isOptionRunning = false;
 				fileManagerA.clear();
