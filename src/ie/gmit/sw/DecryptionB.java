@@ -2,7 +2,7 @@ package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
 
-public class DecryptA implements Runnable
+public class DecryptionB implements Runnable
 {
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
@@ -25,10 +25,24 @@ public class DecryptA implements Runnable
 
 	char[] tranformedText;
 
+	char tCharIn;
+	char[] tString;
+
+	int mTRRow[] = new int['Z' + 1];
+	int mTRCol[] = new int['Z' + 1];
+	int mBLRow[] = new int['Z' + 1];
+	int mBRCol[] = new int['Z' + 1];
+
+	char l1 = 0, l2 = 0;
+	int l1p = 0, l2p = 0;
+	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+
+	String stringOut;
+
 	/*
 	 * Constructor
 	 */
-	DecryptA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP, KeyManagerA keyManagerP)
+	DecryptionB(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP, KeyManagerA keyManagerP)
 	{
 		queueIn = queueInP;
 
@@ -110,14 +124,7 @@ public class DecryptA implements Runnable
 		} // while(true)
 
 		// check if there is last letter
-		if (l1 != 0)
-		{
-			tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
 
-			tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
-
-			line = "" + mTL[mTRRow[l1]][0] + mTL[0][mBRCol[l1]];
-		}
 		try
 		{
 			queueOut.put(line);
@@ -131,75 +138,47 @@ public class DecryptA implements Runnable
 
 	}// run()
 
-	char[] tString;
-
-	int mTRRow[] = new int['Z' + 1];
-	int mTRCol[] = new int['Z' + 1];
-	int mBLRow[] = new int['Z' + 1];
-	int mBRCol[] = new int['Z' + 1];
-
-	char l1 = 0, l2 = 0;
-	int l1p = 0, l2p = 0;
-	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-
-	boolean letterFordward = false;
-
-	String stringOut;
-
 	private void encryptLine(String lineEncryptp)
 	{
-		if (l1 != 0)
-		{
-			l1p = 0;
-			letterFordward = true;
 
-		} else
-		{
-			letterFordward = false;
-		}
 		tranformedText = new char[lineEncryptp.length() + 1];
-
-		lineEncryptp = lineEncryptp.toUpperCase();
 
 		for (int position = 0; position < lineEncryptp.length(); position++)
 		{
 
-			if (lineEncryptp.charAt(position) >= 'A' && lineEncryptp.charAt(position) <= 'Z')
+			tCharIn = lineEncryptp.charAt(position);
+
+			// to upper case
+			if (tCharIn >= 'a' && tCharIn <= 'z')
+			{
+				tCharIn = (char) (((int) tCharIn) - 32);
+			}
+
+			if (tCharIn >= 'A' && tCharIn <= 'Z')
 			{
 				if (l1 == 0)
 				{
-					if (lineEncryptp.charAt(position) == 'J')
+					if (tCharIn == 'J')
 					{
 						l1 = 'I';
 					} else
 					{
-						l1 = lineEncryptp.charAt(position);
+						l1 = tCharIn;
 					}
-					if (!letterFordward)
-					{
-						l1p = position;
-					} else
-					{
-						l1p = position + 1;
-					}
+					l1p = position;
 
 				} else if (l2 == 0)
 				{
-					if (lineEncryptp.charAt(position) == 'J')
+					if (tCharIn == 'J')
 					{
 						l2 = 'I';
 
 					} else
 					{
-						l2 = lineEncryptp.charAt(position);
+						l2 = tCharIn;
 					}
-					if (!letterFordward)
-					{
-						l2p = position;
-					} else
-					{
-						l2p = position + 1;
-					}
+
+					l2p = position;
 
 					tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
 
@@ -209,17 +188,17 @@ public class DecryptA implements Runnable
 				}
 			} else
 			{
-				if (!letterFordward)
-				{
-					// System.out.println(position);
-					tranformedText[position] = ' ';
-				} else
-				{
-					tranformedText[position + 1] = ' ';
-				}
+
+				tranformedText[position] = tCharIn;
 
 			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
-		}
+
+		} // encryptLine(String lineEncryptp)
+
+		//just reset we don't expect extra letter when decrypt 
+		l1 = 0;
+		l2 = 0;
+
 		try
 		{
 
@@ -257,4 +236,4 @@ public class DecryptA implements Runnable
 		}
 	}// createEncMatrices()
 
-}
+}// DecryptionB

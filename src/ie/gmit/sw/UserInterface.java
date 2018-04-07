@@ -188,7 +188,7 @@ public class UserInterface
 			// set input file
 			case 4:
 
-				scanner.nextLine();
+				// scanner.nextLine();
 				fileManagerA.inInputFileName();
 				isFromUrl = false;
 				break;
@@ -200,7 +200,7 @@ public class UserInterface
 
 			case 6:
 
-				scanner.nextLine();
+				// scanner.nextLine();
 				fileManagerA.inOutputFileName();
 				break;
 
@@ -220,7 +220,6 @@ public class UserInterface
 		} // while (isOptionRunning)
 
 	}// encryptionAMenu()
-
 
 	private void decryptAMenu()
 	{
@@ -302,7 +301,6 @@ public class UserInterface
 
 			case 2:
 
-				scanner.nextLine();
 				keyManagerA.inputTRKey();
 				keyManagerA.inputBLKey();
 
@@ -316,7 +314,6 @@ public class UserInterface
 			// set input file
 			case 4:
 
-				scanner.nextLine();
 				fileManagerA.inInputFileName();
 				isFromUrl = false;
 				break;
@@ -328,7 +325,6 @@ public class UserInterface
 
 			case 6:
 
-				scanner.nextLine();
 				fileManagerA.inOutputFileName();
 				break;
 
@@ -372,36 +368,34 @@ public class UserInterface
 
 		--index;
 		System.out.println(menuOptions);
-		System.out.print("Please select choice and press enter:");
 
-		while (isInputNotRigth)
+		while (true)
 		{
 			try
 			{
-				inputNumber = scanner.nextInt();
-				scanner.nextLine();	
-				isInputNotRigth = false;
-				
-			} catch (InputMismatchException e)
-			{
-				
-				scanner.nextLine();		
-				System.out.println("Wrong input, please enter a number.");
 				System.out.print("Please select choice and press enter:");
-				scanner.nextLine();				
+				inputNumber = Integer.parseInt(scanner.nextLine());
+				// scanner.nextLine();
 
-			}
+				if (inputNumber < lower || inputNumber > index)
+				{
+					System.out.println("Wrong input, please enter a number.");
 
-			if (inputNumber < lower || inputNumber > index)
+				} else
+				{
+					break;
+				}
+
+				// break;
+
+			} catch (Exception e)
 			{
-				System.out.println("Wrong input, please enter a number.");
-				System.out.print("Please select choice and press enter:");
 
-				isInputNotRigth = true;
+				System.out.print("Wrong input, please enter a number.\n");
 
-			} else
-			{
-				isInputNotRigth = false;
+				// System.out.print("Please select choice and press enter:");
+				// scanner.nextLine();
+
 			}
 
 		} // while (isInputRigth)
@@ -410,27 +404,26 @@ public class UserInterface
 
 	}// inputMenu(int lower, String[] options)
 
-	
 	private void setMemoryConstraint()
 	{
 		int m;
-	
+
 		while (true)
 		{
 			try
 			{
 				System.out.print(
-						
-						"Please enter memory constraint, must be bigger than 0 and smaller than 2147483647(Higher value more memory used). ");
-			m =scanner.nextInt();//nextLine();
-			//	m = Integer.parseInt(scanner.nextLine());
-			
 
-				if(m<=0||m>2147483647) throw new Exception();
+						"Please enter memory constraint, must be bigger than 0 and smaller than 2147483647(Higher value more memory used). ");
+				m = scanner.nextInt();// nextLine();
+				// m = Integer.parseInt(scanner.nextLine());
+
+				if (m <= 0 || m > 2147483647)
+					throw new Exception();
 				break;
 			} catch (Exception e)
 			{
-				
+
 				scanner.nextLine();
 			}
 		}

@@ -2,18 +2,9 @@ package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
 
-/*
-  *Encryption using a 5 side matrix 
- * Line by line , if a line have a odd number of characters the character is pass over to the next line
- * if the last line have a odd number of characters the last character  will be encrypted with the first 
- * element in the matrix (row=0, col=0).
- */
-
-public class EncryptionA implements Runnable
+public class EncryptionB implements Runnable
 {
 	private final static int MATRIX_SIZE = 5;
-
-	
 
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
 	final char[][] mTL =
@@ -24,13 +15,13 @@ public class EncryptionA implements Runnable
 			{ 'Q', 'R', 'S', 'T', 'U' },
 			{ 'V', 'W', 'X', 'Y', 'Z' } };
 
-	// mathc for extra letter set to x
-	private int colMatch = 2;
-	private int rowMatch = 4;
-
 	
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
+	
+	//mathc for extra letter set to x
+	private int colMatch = 2;
+	private int rowMatch = 4;
 	
 	// Bottom left and top right matrices
 	char[][] mTR;
@@ -51,14 +42,12 @@ public class EncryptionA implements Runnable
 	int l1p = 0, l2p = 0;
 	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 
-	boolean letterFordward = false;
-
 	String stringOut;
 
 	/*
 	 * Constructor
 	 */
-	public EncryptionA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP,
+	public EncryptionB(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP,
 			KeyManagerA keyManagerP)
 	{
 		queueIn = queueInP;
@@ -111,12 +100,6 @@ public class EncryptionA implements Runnable
 
 		} // while(true)
 
-		// check if there is last letter
-		if (l1 != 0)
-		{
-
-			line = "" + mTR[mTRRow[l1]][colMatch] + mBL[rowMatch][mBRCol[l1]];
-		}
 		try
 		{
 			queueOut.put(line);
@@ -141,15 +124,6 @@ public class EncryptionA implements Runnable
 	 */
 	private void encryptLine(String lineEncryptp)
 	{
-		if (l1 != 0)// there is a letter carried forward
-		{
-			l1p = 0;
-			letterFordward = true;
-
-		} else
-		{
-			letterFordward = false;
-		}
 
 		tranformedText = new char[lineEncryptp.length() + 1];
 
@@ -178,13 +152,7 @@ public class EncryptionA implements Runnable
 						l1 = tCharIn;
 					}
 
-					if (!letterFordward)
-					{
-						l1p = position;
-					} else
-					{
-						l1p = position + 1;
-					}
+					l1p = position;
 
 				} else if (l2 == 0)
 				{
@@ -197,13 +165,7 @@ public class EncryptionA implements Runnable
 						l2 = tCharIn;
 					}
 
-					if (!letterFordward)
-					{
-						l2p = position;
-					} else
-					{
-						l2p = position + 1;
-					}
+					l2p = position;
 
 					tranformedText[l1p] = mTR[mTRRow[l1]][mTRCol[l2]];
 
@@ -213,18 +175,24 @@ public class EncryptionA implements Runnable
 				}
 			} else
 			{
-				if (!letterFordward)
-				{
-					// System.out.println(position);
-					tranformedText[position] = ' ';
-				} else
-				{
-					tranformedText[position + 1] = ' ';
-				}
+
+				// System.out.println(position);
+				tranformedText[position] = tCharIn;
 
 			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
 
 		} // for (int position = 0; position < lineEncryptp.length(); position++)
+
+		// take care of leeter forward in this line
+
+		if (l1 != 0)// there is a letter carried forward
+		{
+			// we match it with letter
+			tranformedText[l1p] = mTR[mTRRow[l1]][colMatch];
+			tranformedText[l1p + 1] = mBL[rowMatch][mBRCol[l1]];
+		}
+		l1 = 0;
+		l2 = 0;
 
 		try
 		{

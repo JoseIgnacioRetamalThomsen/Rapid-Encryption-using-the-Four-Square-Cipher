@@ -91,7 +91,7 @@ public class FileManager
 			System.out.println(
 					"File not found, if you are entering a relative file must be in the root foolder of the program\n anyway if we keep not finding your file please enter  the full address (eg: \" c:\\users\\desktop\\myfile.txt \")");
 
-			System.out.print("Please enter the file name: ");
+			System.out.print("Please enter the input file name: ");
 			input = scanner.nextLine().trim();
 
 		} // while (!checkIfFileExist(input, true))
