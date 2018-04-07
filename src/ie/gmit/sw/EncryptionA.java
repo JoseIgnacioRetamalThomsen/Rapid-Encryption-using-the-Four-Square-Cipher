@@ -134,7 +134,7 @@ public class EncryptionA implements Runnable
 	 */
 	private void encryptLine(String lineEncryptp)
 	{
-		if (l1 != 0)// O(1)
+		if (l1 != 0)//there is a letter carried forward
 		{
 			l1p = 0;
 			letterFordward = true;
@@ -144,7 +144,7 @@ public class EncryptionA implements Runnable
 			letterFordward = false;
 		}
 
-		tranformedText = new char[lineEncryptp.length() + 1];// O(1)
+		tranformedText = new char[lineEncryptp.length() + 1];
 
 		// lineEncryptp = lineEncryptp.toUpperCase();
 

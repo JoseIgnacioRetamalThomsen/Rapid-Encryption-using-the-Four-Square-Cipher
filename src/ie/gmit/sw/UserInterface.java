@@ -221,32 +221,6 @@ public class UserInterface
 
 	}// encryptionAMenu()
 
-	private void setMemoryConstraint()
-	{
-		int m;
-	
-		while (true)
-		{
-			try
-			{
-				System.out.print(
-						
-						"Please enter memory constraint, must be bigger than 0 and smaller than 2147483647(Higher value more memory used). ");
-			m =scanner.nextInt();//nextLine();
-			//	m = Integer.parseInt(scanner.nextLine());
-			
-
-				if(m<=0||m>2147483647) throw new Exception();
-				break;
-			} catch (Exception e)
-			{
-				
-				scanner.nextLine();
-			}
-		}
-		encryptAllA.setQueueSize(m);
-
-	}// setMemoryConstraint()
 
 	private void decryptAMenu()
 	{
@@ -360,6 +334,11 @@ public class UserInterface
 
 			case 7:
 
+				setMemoryConstraint();
+				break;
+
+			case 8:
+
 				isOptionRunning = false;
 				fileManagerA.clear();
 				break;
@@ -378,7 +357,7 @@ public class UserInterface
 	{
 
 		int inputNumber = 0;
-		boolean isInputRigth = true;
+		boolean isInputNotRigth = true;
 
 		StringBuilder menuOptions = new StringBuilder();
 
@@ -393,32 +372,36 @@ public class UserInterface
 
 		--index;
 		System.out.println(menuOptions);
-		System.out.print("Please enter Choice and press enter:");
+		System.out.print("Please select choice and press enter:");
 
-		while (isInputRigth)
+		while (isInputNotRigth)
 		{
 			try
 			{
 				inputNumber = scanner.nextInt();
-				isInputRigth = false;
+				scanner.nextLine();	
+				isInputNotRigth = false;
+				
 			} catch (InputMismatchException e)
 			{
+				
+				scanner.nextLine();		
 				System.out.println("Wrong input, please enter a number.");
-				System.out.print("Please enter Choice and press enter:");
-				scanner.nextLine();
+				System.out.print("Please select choice and press enter:");
+				scanner.nextLine();				
 
 			}
 
 			if (inputNumber < lower || inputNumber > index)
 			{
 				System.out.println("Wrong input, please enter a number.");
-				System.out.print("Please enter Choice and press enter:");
+				System.out.print("Please select choice and press enter:");
 
-				isInputRigth = true;
+				isInputNotRigth = true;
 
 			} else
 			{
-				isInputRigth = false;
+				isInputNotRigth = false;
 			}
 
 		} // while (isInputRigth)
@@ -426,5 +409,33 @@ public class UserInterface
 		return inputNumber;
 
 	}// inputMenu(int lower, String[] options)
+
+	
+	private void setMemoryConstraint()
+	{
+		int m;
+	
+		while (true)
+		{
+			try
+			{
+				System.out.print(
+						
+						"Please enter memory constraint, must be bigger than 0 and smaller than 2147483647(Higher value more memory used). ");
+			m =scanner.nextInt();//nextLine();
+			//	m = Integer.parseInt(scanner.nextLine());
+			
+
+				if(m<=0||m>2147483647) throw new Exception();
+				break;
+			} catch (Exception e)
+			{
+				
+				scanner.nextLine();
+			}
+		}
+		encryptAllA.setQueueSize(m);
+
+	}// setMemoryConstraint()
 
 }// UserInterface
