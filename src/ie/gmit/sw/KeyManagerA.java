@@ -61,15 +61,15 @@ public class KeyManagerA
 	 */
 
 	/*
-	 * Big-O: Time :  effectively O(1).(Comes from setKeyTR(char[] key))
+	 * Big-O: Time : effectively O(1).(Comes from setKeyTR(char[] key))
 	 * 
 	 * Big-O: Space : effectively O(1).
 	 */
-	
+
 	public void setKeys(char[] tR, char[] bL)
 	{
-		setKeyTR(tR);//effectively O(1)
-		setKeyBL(bL);//effectively O(1)
+		setKeyTR(tR);// effectively O(1)
+		setKeyBL(bL);// effectively O(1)
 
 	}
 
@@ -78,8 +78,8 @@ public class KeyManagerA
 	 * Big-O: Time : O(n), n = number of characters in the key parameter array. But
 	 * since n can't be bigger than 25(n = constant) is effectively O(1). Big-O:
 	 * 
-	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same than
-	 * time complexity apply so O(1).
+	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same
+	 * than time complexity apply so O(1).
 	 */
 	public boolean setKeyTR(char[] key)
 	{
@@ -108,8 +108,8 @@ public class KeyManagerA
 	 * Big-O: Time : O(n), n = number of characters in the key parameter array. But
 	 * since n can't be bigger than 25(n = constant) is effectively O(1). Big-O:
 	 * 
-	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same than
-	 * time complexity apply so O(1).
+	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same
+	 * than time complexity apply so O(1).
 	 */
 	public boolean setKeyBL(char[] key)
 	{
@@ -142,7 +142,8 @@ public class KeyManagerA
 	 * Big-O: Time : O(1), it may look like O(n^2) with n = MATRIX_SIZE, but
 	 * MATRIX_SIZE = 5 so O(5^2) = O(25)= O(1). If MATRIX_SIZE is variable will be.
 	 * 
-	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time complexity apply.
+	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time
+	 * complexity apply.
 	 */
 	public void displayTRKey()
 	{
@@ -167,7 +168,8 @@ public class KeyManagerA
 	 * Big-O: Time : O(1), it may look like O(n^2) with n = MATRIX_SIZE, but
 	 * MATRIX_SIZE = 5 so O(5^2) = O(25)= O(1). If MATRIX_SIZE is variable will be.
 	 * 
-	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time complexity apply.
+	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time
+	 * complexity apply.
 	 */
 	public void displayBLKey()
 	{
@@ -209,12 +211,13 @@ public class KeyManagerA
 
 	// Used for input both keys.
 	/*
-	 * Big-O: Time : O(1) for each time the inside  while loop run.
+	 * Big-O: Time : O(1) for each time the inside while loop run.
 	 *
 	 * 
-	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time complexity apply.
+	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time
+	 * complexity apply.
 	 */
-		private char[] inputKeyAll()
+	private char[] inputKeyAll()
 	{
 		// Scanner scanner1 = new Scanner(System.in);
 
@@ -230,7 +233,7 @@ public class KeyManagerA
 
 		Character tempCharacter;
 
-		while (!isKeyGood)//O(1) (O(n) , n= keyInput.length() but n = 25)
+		while (!isKeyGood)// O(1) (O(n) , n= keyInput.length() but n = 25)
 		{
 			System.out.print("Please enter the 25 uniques  characters  key and then press enter:");
 			keyInput = scanner.nextLine().toUpperCase().trim();
@@ -246,7 +249,7 @@ public class KeyManagerA
 
 				inputKeySet = new HashSet<Character>();
 
-				for (int i = 0; i < keyInput.length(); i++)//O(1) (O(n) , n= keyInput.length() but n = 25)
+				for (int i = 0; i < keyInput.length(); i++)// O(1) (O(n) , n= keyInput.length() but n = 25)
 				{
 					tempCharacter = new Character(keyInput.charAt(i));
 
@@ -269,8 +272,7 @@ public class KeyManagerA
 
 						break;
 
-					} // if (keyInput.charAt(i) >= 'A' && keyInput.charAt(i) <= 'Z' &&
-						// keyInput.charAt(i) != 'J')
+					} // if (keyInput.charAt(i) >= 'A' && keyInput.charAt(i) <= ...
 
 				} // for (int i = 0; i < keyInput.length(); i++)
 
@@ -281,16 +283,13 @@ public class KeyManagerA
 
 		} // while (!isKeyGood)
 
-		// Character c[] = inputKeySet.toArray(new Character[0]);
-
-		// scanner.close();
-
 		return keyInput.toCharArray();
 
 	}// inputKey()
 
 	/*
-	 * Big-O: Time : O(n + m) where n = mTRElements.size() and  m = mBLElements.size() , but since they are always 25 is O(1).
+	 * Big-O: Time : O(n + m) where n = mTRElements.size() and m =
+	 * mBLElements.size() , but since they are always 25 is O(1).
 	 * 
 	 * Big-O: Space : O(1) same than time apply.
 	 */
@@ -299,7 +298,7 @@ public class KeyManagerA
 		List<Character> mBLElements = new LinkedList<Character>();
 		List<Character> mTRElements = new LinkedList<Character>();
 
-		for (int i = 65; i <= 90; i++)//O(1) runs always 25 times.
+		for (int i = 65; i <= 90; i++)// O(1) runs always 25 times.
 		{
 			if (i == 74)
 				continue;
@@ -307,15 +306,15 @@ public class KeyManagerA
 			mBLElements.add((char) (i));
 		}
 
-		Collections.shuffle(mTRElements);//O(n), n size of list.
-		Collections.shuffle(mBLElements);//O(m), m size of list.
+		Collections.shuffle(mTRElements);// O(n), n size of list.
+		Collections.shuffle(mBLElements);// O(m), m size of list.
 
-		Character[] cTR = mTRElements.toArray(new Character[mTRElements.size()]);//O(n), n size of list.
-		Character[] cBL = mBLElements.toArray(new Character[mBLElements.size()]);//O(m), m size of list.
+		Character[] cTR = mTRElements.toArray(new Character[mTRElements.size()]);// O(n), n size of list.
+		Character[] cBL = mBLElements.toArray(new Character[mBLElements.size()]);// O(m), m size of list.
 
 		char[] tR = new char[25];
 		int i = 0;
-		for (Character ch : cTR)//O(n), n size of list.
+		for (Character ch : cTR)// O(n), n size of list.
 		{
 			tR[i++] = (char) ch;
 		}
@@ -323,7 +322,7 @@ public class KeyManagerA
 		char[] bL = new char[25];
 
 		i = 0;
-		for (Character ch : cBL) //O(m), m size of list.
+		for (Character ch : cBL) // O(m), m size of list.
 		{
 			bL[i++] = (char) ch;
 		}
@@ -331,4 +330,4 @@ public class KeyManagerA
 
 	}// generateRandomKeys()
 
-}//KeyManagerA
+}// KeyManagerA

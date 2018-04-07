@@ -22,7 +22,11 @@ public class UserInterface
 	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
 	final static String encryptionAMenuOptions[] =
 	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
-			"Set output file", "Back to main menu." };
+			"Set output file", "Set memory constraint.", "Back to main menu." };
+
+	final static String decryptionAMenuOptions[] =
+	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
+			"Set output file", "Set memory constraint.", "Back to main menu." };
 
 	final static String encryptionAFileOptions[] =
 	{ "Please setup evething.", "input file ", "input file url", "output file", "back to keys." };
@@ -30,12 +34,10 @@ public class UserInterface
 	// file variable
 	Scanner scanner = new Scanner(System.in);
 
-	
-
 	KeyManagerA keyManagerA = new KeyManagerA(scanner);
 	FileManager fileManagerA = new FileManager(scanner);
 
-	EncryptAllA encryptAllA = new EncryptAllA(keyManagerA, fileManagerA);
+	EncryptAndDecrypt encryptAllA = new EncryptAndDecrypt(keyManagerA, fileManagerA);
 
 	public void start()
 	{
@@ -148,6 +150,10 @@ public class UserInterface
 			}
 			System.out.println();
 
+			System.out.print("Memory constraint:  ");
+			System.out.println(encryptAllA.getQueueSize());
+			System.out.println();
+
 			if (isSetup)
 			{
 				encryptionAMenuOptions[0] = "Encript.";
@@ -160,12 +166,12 @@ public class UserInterface
 			// "Use actuals keys.
 			case 1:
 
-				encryptAllA.encryptOne(isFromUrl);
+				encryptAllA.encryptA(isFromUrl);
 				fileManagerA.clear();
 				break;
 
 			case 2:
-				
+
 				scanner.nextLine();
 				keyManagerA.inputTRKey();
 				keyManagerA.inputBLKey();
@@ -174,8 +180,7 @@ public class UserInterface
 
 			// random key
 			case 3:
-				
-				
+
 				keyManagerA.generateRandomKeys();
 
 				break;
@@ -194,12 +199,20 @@ public class UserInterface
 				break;
 
 			case 6:
+
 				scanner.nextLine();
 				fileManagerA.inOutputFileName();
 				break;
 
 			case 7:
+
+				setMemoryConstraint();
+				break;
+
+			case 8:
+
 				isOptionRunning = false;
+				fileManagerA.clear();
 				break;
 
 			}// switch (menuOption)
@@ -208,10 +221,40 @@ public class UserInterface
 
 	}// encryptionAMenu()
 
+	private void setMemoryConstraint()
+	{
+		int m;
+	
+		while (true)
+		{
+			try
+			{
+				System.out.print(
+						
+						"Please enter memory constraint, must be bigger than 0 and smaller than 2147483647(Higher value more memory used). ");
+			m =scanner.nextInt();//nextLine();
+			//	m = Integer.parseInt(scanner.nextLine());
+			
+
+				if(m<=0||m>2147483647) throw new Exception();
+				break;
+			} catch (Exception e)
+			{
+				
+				scanner.nextLine();
+			}
+		}
+		encryptAllA.setQueueSize(m);
+
+	}// setMemoryConstraint()
+
 	private void decryptAMenu()
 	{
 		int menuOption;
 		boolean isOptionRunning = true;
+
+		boolean isFromUrl = false;
+		boolean isSetup = false;
 
 		while (isOptionRunning)
 		{
@@ -224,7 +267,7 @@ public class UserInterface
 			System.out.printf("%80s%n",
 					"*--------------------------------------------------------------------------------*");
 
-			System.out.println("\nPlease enter new keys or press 1 for continue with the actual keys.\n");
+			System.out.println("\nPlease setup and pres 1 when ready.\n");
 
 			System.out.println("Actuals keys:");
 			keyManagerA.displayTRKey();
@@ -232,33 +275,64 @@ public class UserInterface
 			System.out.println();
 
 			System.out.print("File or URL: ");
-			fileManagerA.displayFileName();
+			if (isFromUrl)
+			{
+				if (fileManagerA.getUrlFileName() == null)
+				{
+					System.out.println("Please setup.");
+				} else
+				{
+					fileManagerA.displayUrl();
+					isSetup = true;
+				}
+			} else
+			{
+				if (fileManagerA.getInputFileName() == null)
+				{
+					System.out.println("Please setup.");
+				} else
+				{
+					fileManagerA.displayFileName();
+				}
+			}
 			System.out.println();
 
-			System.out.println("output result to : ");
-			fileManagerA.displayOutputFileName();
-			;
+			System.out.print("output result to : ");
+			if (fileManagerA.getOutputFileName() == null)
+			{
+				System.out.println("Please setup.");
+				isSetup = false;
 
-			menuOption = inputMenu(1, encryptionAMenuOptions);
+			} else
+			{
+				fileManagerA.displayOutputFileName();
+				isSetup = true;
+			}
+			System.out.println();
+
+			if (isSetup)
+			{
+				decryptionAMenuOptions[0] = "Decrypt.";
+			}
+
+			menuOption = inputMenu(1, decryptionAMenuOptions);
 
 			switch (menuOption)
 			{
 			// "Use actuals keys.
 			case 1:
 
-				encryptAllA.decryptOne();
+				encryptAllA.decryptA(isFromUrl);
 				fileManagerA.clear();
 				break;
 
 			case 2:
-				scanner.nextLine();
 
+				scanner.nextLine();
 				keyManagerA.inputTRKey();
 				keyManagerA.inputBLKey();
 
-				break;
-
-			// random key
+				// random key
 			case 3:
 
 				keyManagerA.generateRandomKeys();
@@ -268,65 +342,32 @@ public class UserInterface
 			// set input file
 			case 4:
 
+				scanner.nextLine();
 				fileManagerA.inInputFileName();
-
+				isFromUrl = false;
 				break;
 
 			case 5:
 
 				fileManagerA.inputURL();
-
 				break;
 
 			case 6:
+
 				scanner.nextLine();
 				fileManagerA.inOutputFileName();
 				break;
 
 			case 7:
+
 				isOptionRunning = false;
+				fileManagerA.clear();
 				break;
 
 			}// switch (menuOption)
 
 		} // while (isOptionRunning)
 	}// decryptAMenu()
-
-	private void fileChoseMenu()
-	{
-		int menuOption;
-		boolean isOptionRunning = true;
-
-		// need to ad from url
-
-		while (isOptionRunning)
-		{
-			System.out.println("Set file menu");
-
-			menuOption = inputMenu(1, encryptionAFileOptions);
-
-			switch (menuOption)
-			{
-			//
-			case 1:
-
-				break;
-
-			// Input
-			case 2:
-				fileManagerA.inInputFileName();
-				scanner.nextLine();
-				break;
-
-			// URL
-			case 3:
-
-				break;
-
-			}// switch (menuOption)
-
-		} // while (isOptionRunning)
-	}
 
 	/*
 	 * Method for show menu option and get the choice from console lower is the
@@ -340,8 +381,6 @@ public class UserInterface
 		boolean isInputRigth = true;
 
 		StringBuilder menuOptions = new StringBuilder();
-
-		// int number = scanner.nextInt();
 
 		// compose menu
 		int index = lower;
@@ -384,99 +423,8 @@ public class UserInterface
 
 		} // while (isInputRigth)
 
-		// scanner.close();
 		return inputNumber;
-	}
 
-	/*
-	 * private static char[] inputKey25() { Scanner scanner;
-	 * 
-	 * final int MATRIX_SIZE = 25;
-	 * 
-	 * String keyInput = new String(); boolean isKeyGood = false;
-	 * 
-	 * scanner = new Scanner(System.in);
-	 * 
-	 * HashSet<Character> inputKeySet = new HashSet<Character>();
-	 * 
-	 * Character tempCharacter;
-	 * 
-	 * while (!isKeyGood) { System.out.
-	 * print("Please enter the 25 uniques  characters  key and then press enter:\n "
-	 * ); keyInput = scanner.nextLine().toUpperCase();
-	 * 
-	 * // check length if (keyInput.length() != MATRIX_SIZE) { System.out.print(
-	 * "Key must be 25 charaters long not " + keyInput.length() +
-	 * " character, please try again.\n"); } else // check all characters are unique
-	 * {
-	 * 
-	 * inputKeySet = new HashSet<Character>();
-	 * 
-	 * for (int i = 0; i < keyInput.length(); i++) { tempCharacter = new
-	 * Character(keyInput.charAt(i));
-	 * 
-	 * if (keyInput.charAt(i) >= 'A' && keyInput.charAt(i) <= 'Z' &&
-	 * keyInput.charAt(i) != 'J') { if (inputKeySet.add(tempCharacter)) { // all
-	 * good } else { System.out.println("the character " + tempCharacter +
-	 * " is repeted, please try again.\n"); break; }
-	 * 
-	 * } else {
-	 * System.out.println("the key contains invalid characters, please try again.\n"
-	 * ); break; }
-	 * 
-	 * } // for (int i = 0; i < keyInput.length(); i++)
-	 * 
-	 * } // if (keyInput.length() != MATRIX_SIZE)
-	 * 
-	 * if (inputKeySet.size() == MATRIX_SIZE) {
-	 * 
-	 * isKeyGood = true; }
-	 * 
-	 * } // while (!isKeyGood)
-	 * 
-	 * for (Character ca : inputKeySet) { System.out.println(ca); }
-	 * 
-	 * Character c[] = inputKeySet.toArray(new Character[0]);
-	 * 
-	 * for (Character ca : c) { System.out.println(ca); }
-	 * 
-	 * return keyInput.toCharArray(); }
-	 */
+	}// inputMenu(int lower, String[] options)
 
-	/*
-	 * private static String inputFileName() { Scanner scanner; String input;
-	 * 
-	 * // Pattern pattern = Pattern.compile("\\w[.][a-zA-Z][a-zA-Z][a-zA-Z]");
-	 * 
-	 * scanner = new Scanner(System.in);
-	 * 
-	 * input = scanner.nextLine();
-	 * 
-	 * boolean fileExiste = checkIfFileExist(input, true); if (fileExiste) { return
-	 * input; } else { return null; }
-	 * 
-	 * }
-	 */
-	/*
-	 * private static boolean checkIfFileExist(String fileName, boolean
-	 * relativePath) { File file = new File(fileName);
-	 * 
-	 * return file.isFile(); }
-	 */
-	public static void main(String[] args)
-	{
-
-		// new UserInterface().MainMenu();
-		UserInterface u = new UserInterface();
-		u.start();
-		// u.inputFileName();
-		// u.MainMenu();
-		// System.out.println(u.checkIfFileExist("/out8.txt", true));
-		/*
-		 * Encryption5x5 e = new Encryption5x5(); e.setKeyBL(new
-		 * UserInterface().inputKey25()); e.printKey(); // TODO Auto-generated method
-		 * stub
-		 */
-	}
-
-}
+}// UserInterface

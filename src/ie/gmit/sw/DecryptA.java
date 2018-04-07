@@ -7,8 +7,6 @@ public class DecryptA implements Runnable
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
 
-	
-
 	/**** Encryption variables ******/
 	// Constants
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
@@ -35,33 +33,16 @@ public class DecryptA implements Runnable
 		queueIn = queueInP;
 
 		queueOut = queueOutP;
-		
+
 		this.mTR = keyManagerP.mTR;
 		this.mBL = keyManagerP.mBL;
-/*
-		mBL = new char[][]
-		{
-				{ 'M', 'F', 'N', 'B', 'D' },
-				{ 'C', 'R', 'H', 'S', 'A' },
-				{ 'X', 'Y', 'O', 'G', 'V' },
-				{ 'I', 'T', 'U', 'E', 'W' },
-				{ 'L', 'Q', 'Z', 'K', 'P' } };
-		mTR = new char[][]
-		{
-				{ 'Z', 'G', 'P', 'T', 'F' },
-				{ 'O', 'I', 'H', 'M', 'U' },
-				{ 'W', 'D', 'R', 'C', 'N' },
-				{ 'Y', 'K', 'E', 'Q', 'A' },
-				{ 'X', 'V', 'S', 'B', 'L' } };
-	
-*/
+
 	}
+
 	public boolean setKeyBL(char[] key)
 	{
 		if (key.length != 25)
-		{
 			return false;
-		}
 
 		int row = 0, col = 0;
 		for (Character character : key)
@@ -72,17 +53,16 @@ public class DecryptA implements Runnable
 				col = 0;
 				row++;
 			}
-		}
+		} // for (Character character : key)
 
 		return true;
-	}
+
+	}// setKeyBL(char[] key)
 
 	public boolean setKeyTR(char[] key)
 	{
 		if (key.length != 25)
-		{
 			return false;
-		}
 
 		int row = 0, col = 0;
 		for (Character character : key)
@@ -93,20 +73,21 @@ public class DecryptA implements Runnable
 				col = 0;
 				row++;
 			}
-		}
+
+		} // for (Character character : key)
+
 		return true;
-	}
+
+	}// setKeyTR(char[] key)
 
 	@Override
 	public void run()
 	{
 		CharSequence line = null;
 		createEncMatrices();
-		
 
 		while (true)
 		{
-
 			try
 			{
 				line = queueIn.take();
@@ -119,7 +100,7 @@ public class DecryptA implements Runnable
 
 			if (!(line instanceof Poison))
 			{
-				encryptLine((String)line);
+				encryptLine((String) line);
 
 			} else
 			{
@@ -127,16 +108,15 @@ public class DecryptA implements Runnable
 			}
 
 		} // while(true)
-		
-		//check if there is last letter
-		if(l1!=0)
+
+		// check if there is last letter
+		if (l1 != 0)
 		{
 			tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
 
-		tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
-			
-			
-			line = ""+ mTL[mTRRow[l1]][0]+ mTL[0][mBRCol[l1]];
+			tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
+
+			line = "" + mTL[mTRRow[l1]][0] + mTL[0][mBRCol[l1]];
 		}
 		try
 		{
@@ -161,7 +141,7 @@ public class DecryptA implements Runnable
 	char l1 = 0, l2 = 0;
 	int l1p = 0, l2p = 0;
 	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-	
+
 	boolean letterFordward = false;
 
 	String stringOut;
@@ -184,8 +164,6 @@ public class DecryptA implements Runnable
 		for (int position = 0; position < lineEncryptp.length(); position++)
 		{
 
-			
-			
 			if (lineEncryptp.charAt(position) >= 'A' && lineEncryptp.charAt(position) <= 'Z')
 			{
 				if (l1 == 0)
@@ -215,26 +193,30 @@ public class DecryptA implements Runnable
 					{
 						l2 = lineEncryptp.charAt(position);
 					}
-					  if (!letterFordward) {
-                          l2p = position;
-                      } else {
-                          l2p = position + 1;
-                      }
+					if (!letterFordward)
+					{
+						l2p = position;
+					} else
+					{
+						l2p = position + 1;
+					}
 
-					  tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
+					tranformedText[l1p] = mTL[mTRRow[l1]][mTRCol[l2]];
 
-						tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
+					tranformedText[l2p] = mTL[mBLRow[l2]][mBRCol[l1]];
 					l1 = 0;
 					l2 = 0;
 				}
 			} else
 			{
-				 if (!letterFordward) {
-                     // System.out.println(position);
-					 tranformedText[position] = ' ';
-                 } else {
-                	 tranformedText[position + 1] = ' ';
-                 }
+				if (!letterFordward)
+				{
+					// System.out.println(position);
+					tranformedText[position] = ' ';
+				} else
+				{
+					tranformedText[position + 1] = ' ';
+				}
 
 			} // if (inputText.charAt(i) >= 'A' && inputText.charAt(i) <= 'Z')
 		}
@@ -258,8 +240,8 @@ public class DecryptA implements Runnable
 		{
 			for (x1 = 0; x1 < 5; x1++)
 			{
-				mBRCol[mTR[x1][x2]]=x2;
-				mTRRow[mTR[x1][x2]]=x1;
+				mBRCol[mTR[x1][x2]] = x2;
+				mTRRow[mTR[x1][x2]] = x1;
 
 			}
 		}

@@ -1,8 +1,7 @@
 package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeUnit;
+
 /*
   *Encryption using a 5 side matrix 
  * Line by line , if a line have a odd number of characters the character is pass over to the next line
@@ -16,8 +15,6 @@ public class EncryptionA implements Runnable
 
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
-
-	private KeyManagerA keyManager;
 
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
 	final char[][] mTL =
@@ -252,8 +249,9 @@ public class EncryptionA implements Runnable
 				mBRCol[mTL[x1][x2]] = x2;
 				mTRRow[mTL[x1][x2]] = x1;
 
-			}
-		}
+			} // for(x1)
+
+		} // for(x2)
 
 		for (y2 = 0; y2 < MATRIX_SIZE; y2++)// Time O(n^2) n= MATRIX_SIZE but with MATRIX_SIZE=5 => O(1)(run 25 times),
 											// same for space.
@@ -263,8 +261,10 @@ public class EncryptionA implements Runnable
 				mBLRow[mTL[y1][y2]] = y1;
 				mTRCol[mTL[y1][y2]] = y2;
 
-			}
-		}
+			} // for(y1)
+
+		} // for(y2)
+
 	}// createEncMatrices()
 
-}
+}// EncryptionA
