@@ -9,11 +9,16 @@ import java.util.concurrent.BlockingQueue;
  * element in the matrix (row=0, col=0).
  */
 
+/*
+ * Big-O: 
+ * n = total number of characters in the input file.
+ * m = total number of lines in the input file.
+ * a = average number of characters per line in the input file.
+ * p = number of characters in one line.
+ */
 public class EncryptionA implements Runnable
 {
 	private final static int MATRIX_SIZE = 5;
-
-	
 
 	// Array with the 5x5 matrix with the 25 letters (all minus j)
 	final char[][] mTL =
@@ -28,10 +33,9 @@ public class EncryptionA implements Runnable
 	private int colMatch = 2;
 	private int rowMatch = 4;
 
-	
 	private final BlockingQueue<CharSequence> queueIn;
 	private final BlockingQueue<CharSequence> queueOut;
-	
+
 	// Bottom left and top right matrices
 	char[][] mTR;
 	char[][] mBL;
@@ -70,26 +74,29 @@ public class EncryptionA implements Runnable
 	}// EncryptionA(
 
 	/*
-	 * Big-O: Time : O(n x m), n = average number of characters per line, m = total
-	 * lines in the file. Since the total characters in the file is equal to (number
-	 * of lines)*(average characters on each line) => O(n), n = number of characters
-	 * in the file.
+	 * Big-O (1): Time :O(n) = O(a x m) Look at WriteFile (1).
 	 * 
-	 * Estimation 
+	 * Estimation  (2): TimeToRun = createEncMatrices()Time + m*encryptLine()Time
+	 * +10/(3*10^9) using the values calculated below and m= 64,927 TimeToRun =
+	 * 1*10(-7)  seconds + 64,927* 1.0025 *10^(-6) second second (we can forget about that
+	 * 10...) TimeTorun = 0.0650894 seconds , We can see that only the part
+	 * m*encryptLine()Time have a relevant value , because m*encryptLine()Time= 0.0650893
 	 * 
-	 * Big-O: Space : O(n*m) n = average number of characters per line, m =
-	 * EncryptAllA.QUEUE_SIZE = constant, so O(n) n = average number of characters
-	 * per line.
+	 * Big-O: Space : O(a*m1) m1= queue.Size() since queue.Size()= cons -> O(a).
+	 * So same than WriteLine (3) apply , because in worst case all characters are in one line so will be O(a),
+	 * but if the characters are well distributes in the lines (all lines with more or less same amount of characters) with  will be O(1).
+	 * 
+	 * Estimation : SpaceUsed = createEncMatrices() + m1*encryptLine() , using the default value m1=10,000 
+	 * sapaceUsed = 4,576 bits + 10,000*21,376 bits = 213,764,576 bits = 213.8 MB
 	 */
 	@Override
 	public void run()
 	{
 		CharSequence line = null;
-		createEncMatrices();
+		createEncMatrices();// Big-O time: O(1)
 
-		while (true)// (O(m), m = queueIn total size what is the total lines in the input file)*(
-					// O(n) n = average of lineEncryptp.length()(average characters in each line)) =
-					// O(n*m)
+		while (true)//Big-O Time: O(m*a) , Space : O(a*m1) m1= queue.Size()
+
 		{
 
 			try
@@ -104,7 +111,7 @@ public class EncryptionA implements Runnable
 
 			if (!(line instanceof Poison))
 			{
-				encryptLine((String) line);// O(n) n = lineEncryptp.length()
+				encryptLine((String) line);//Time and space O(a)
 
 			} else
 			{
@@ -137,14 +144,17 @@ public class EncryptionA implements Runnable
 	 * passed to the next line.
 	 */
 	/*
-	 * Big-O: Time : O(n) n = lineEncryptp.length().
+	 * Big-O: Time : O(a) ( a=lineEncryptp.length() ).
 	 * 
-	 * Estimation : T(n) =25n +5 , n = average number of characters per line , for the "WarAndPeace-LeoTolstoy" , n=80 and at 3 billion computation per second
-	 * (25*80 + 5)/(3*10^9)= 6..683 *10^(-7) second
+	 * Estimation : T(n) =25n +5 , n = average number of characters per line , for
+	 * the "WarAndPeace-LeoTolstoy" , n=80 and at 2 billion computation per second
+	 * (25*80 + 5)/(2*10^9)= 1.0025 *10^(-6) second
 	 * 
-	 * Big-O: Space : O(n) n = lineEncryptp.length().
+	 * Big-O: Space : O(a) ( a=lineEncryptp.length() ).
 	 * 
-	 * Estimation : 2*char + 7*int + 1*boolean + n + (the 4 arrays of chars) = 2*32 + 7*32 + 1*32 + 80 + 4n^2 + 64 n  + 256  = 21,376 bits  (asumming that boolean use 32 bits and 80 average characters per line)
+	 * Estimation : 2*char + 7*int + 1*boolean + n + (the 4 arrays of chars) = 2*32
+	 * + 7*32 + 1*32 + 80 + 4n^2 + 64 n + 256 = 21,376 bits (assuming that boolean
+	 * use 32 bits and 80 average characters per line)
 	 */
 	private void encryptLine(String lineEncryptp)
 	{
@@ -250,15 +260,17 @@ public class EncryptionA implements Runnable
 	 * Create matrices for encryption
 	 */
 	/*
-	 * Big-O: Time : O(n^2) n = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 * Big-O: Time : O(p^2) p = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
 	 * 
-	 * Estimation : 25*4 + 25*4 (each loop runs 25 times with 2 operations plus the increase and the comparison)
-	 * = 200 at 3 billion operation per second 200/(3*10^(9)) = 6.66*10(-8) seconds
+	 * Estimation : 25*4 + 25*4 (each loop runs 25 times with 2 operations plus the
+	 * increase and the comparison) = 200 at 2 billion operation per second
+	 * 200/(2*10^(9)) = 1*10(-7) seconds
 	 * 
-	 * Big-O: Space : O(n), n = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 * Big-O: Space : O(p), p = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
 	 * 
-	 * Estimation A 2D char array = (16 +2n)^2 = 4n^2 + 64 n  + 256 , n = char, plus 4 *int , asuming char is 32 bits and int it is 32  so 
-	 * 4*(32)^2 + 64*32 + 256 + 4*32 = 4,576 bits. 
+	 * Estimation A 2D char array = (16 +2n)^2 = 4n^2 + 64 n + 256 , n = char, plus
+	 * 4 *int , asuming char is 32 bits and int it is 32 so 4*(32)^2 + 64*32 + 256 +
+	 * 4*32 = 4,576 bits.
 	 */
 	private void createEncMatrices()
 	{

@@ -5,6 +5,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.BlockingQueue;
 
+/*
+ * Big-O: 
+ * n = total number of characters in the input file.
+ * m = total number of lines in the input file.
+ * a = average number of characters per line in the input file.
+ * p = number of characters in one line.
+ */
+
 public class ParseFile implements Runnable
 {
 
@@ -67,8 +75,8 @@ public class ParseFile implements Runnable
 	 * before.
 	 */
 	/*
-	 * Big-O: Time: O(n) n = total number of characters in the file. Please see at
-	 * the analysis in WriteFile (1) the same apply.
+	 * Big-O: Time: O(n) n = Please see at the analysis in WriteFile (1) the same
+	 * apply.
 	 * 
 	 * Estimation : same estimation than WriteFile (2) apply, well here will be(not
 	 * the difference 2m to (1)) T(m,a)= m*a + 2m +1 ,(m number of lines, a =
@@ -77,11 +85,11 @@ public class ParseFile implements Runnable
 	 * Please look at WriteFile (2) for the estimations.
 	 * 
 	 * 
-	 * Big-O: Space : Same than WriteFile (3). Worst case : O(n) with n = total
-	 * characters. With fair distributed characters per line O(1). Please loo at
-	 * WriteFile (3) for analysis.
+	 * Big-O: Space : Same than WriteFile (3). Worst case : O(n) With fair
+	 * distributed characters per line O(1). Please look at WriteFile (3) for
+	 * analysis.
 	 * 
-	 * Estimation:  same than WriteFile (4).
+	 * Estimation: same than WriteFile (4).
 	 */
 	@Override
 	public void run()
