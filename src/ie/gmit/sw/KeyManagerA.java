@@ -63,6 +63,8 @@ public class KeyManagerA
 	/*
 	 * Big-O: Time : effectively O(1).(Comes from setKeyTR(char[] key))
 	 * 
+	 * Estimation : setKeyTR + set KeyBl = 1.3*10^-7
+	 * 
 	 * Big-O: Space : effectively O(1).
 	 */
 
@@ -77,6 +79,9 @@ public class KeyManagerA
 	/*
 	 * Big-O: Time : O(n), n = number of characters in the key parameter array. But
 	 * since n can't be bigger than 25(n = constant) is effectively O(1). Big-O:
+	 * 
+	 * Estimation: loop + other = 25*5 +5 = 130 at 2 billion operation per second
+	 * 130/(2*10^9)= 6.5*10^-8 seconds
 	 * 
 	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same
 	 * than time complexity apply so O(1).
@@ -107,6 +112,8 @@ public class KeyManagerA
 	/*
 	 * Big-O: Time : O(n), n = number of characters in the key parameter array. But
 	 * since n can't be bigger than 25(n = constant) is effectively O(1). Big-O:
+	 * 
+	 * Estimation L same than setKeyTR 6.5*10^-8 seconds
 	 * 
 	 * Big-O: Space : O(n), n = number of characters in the key parameter array.Same
 	 * than time complexity apply so O(1).
@@ -142,8 +149,12 @@ public class KeyManagerA
 	 * Big-O: Time : O(1), it may look like O(n^2) with n = MATRIX_SIZE, but
 	 * MATRIX_SIZE = 5 so O(5^2) = O(25)= O(1). If MATRIX_SIZE is variable will be.
 	 * 
+	 * Estimation :  25*25*2 =  1250 at 2 billion operations per second =  6.25*10^-7 second
+	 * 
 	 * Big-O: Space : O(n), n = MATRIX_SIZE. Big-O: Space : O(1) Same than Time
 	 * complexity apply.
+	 * 
+	 * 
 	 */
 	public void displayTRKey()
 	{
@@ -291,7 +302,14 @@ public class KeyManagerA
 	 * Big-O: Time : O(n + m) where n = mTRElements.size() and m =
 	 * mBLElements.size() , but since they are always 25 is O(1).
 	 * 
+	 * Estimation : first loop+ 2*shuffle + 2(loop) + setKeys = 25*4 + 2*100 + 2*25 
+	 * +2*25  + set key =400/2*10^9 + 1.3*10^-7=  3.3*10^-7 seconds(let say that shuffle take 100 operations and 2 billion operation per second) 
+	 * 
 	 * Big-O: Space : O(1) same than time apply.
+	 * 
+	 * Estimation : 2 LinkedList + 2 arrays of Characters + 2 array of char + 10 
+	 * lest say linked list use 1 array + 20 and same for Character
+	 * so 6(char array) +50 = 6(16 + 2n) +50 , n = 25 ->  6(66) +50 = 446 bits.
 	 */
 	public void generateRandomKeys()
 	{
@@ -302,7 +320,7 @@ public class KeyManagerA
 		{
 			if (i == 74)
 				continue;
-			mTRElements.add((char) (i));
+			mTRElements.add((char) (i));// O(1) add to top of linked list
 			mBLElements.add((char) (i));
 		}
 

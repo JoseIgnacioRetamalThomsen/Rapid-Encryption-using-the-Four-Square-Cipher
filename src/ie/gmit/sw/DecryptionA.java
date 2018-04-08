@@ -2,6 +2,15 @@ package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
 
+/*
+ * Big-O: 
+ * Basically is the same than EncryptionA
+ * n = total number of characters in the input file.
+ * m = total number of lines in the input file.
+ * a = average number of characters per line in the input file.
+ * p = number of characters in one line.
+ */
+
 public class DecryptionA implements Runnable
 {
 
@@ -49,7 +58,7 @@ public class DecryptionA implements Runnable
 	/*
 	 * Constructor
 	 */
-	DecryptionA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP, KeyManagerA keyManagerP)
+	public DecryptionA(BlockingQueue<CharSequence> queueInP, BlockingQueue<CharSequence> queueOutP, KeyManagerA keyManagerP)
 	{
 		queueIn = queueInP;
 
@@ -60,46 +69,16 @@ public class DecryptionA implements Runnable
 
 	}
 
-	public boolean setKeyBL(char[] key)
-	{
-		if (key.length != 25)
-			return false;
+	/*
+	 * Big-O : O(n) same than EncryptionA(5)
+	 * 
+	 * Estimation : same than EncryptionA(6)
+	 * 
+	 * Big-O: Space : Worst: O(a) , normal : O(1) same than EncryptionA(7)
+	 * 
+	 * Estimation : same than EncryptionA(8)
+	 */
 
-		int row = 0, col = 0;
-		for (Character character : key)
-		{
-			mBL[row][col++] = character;
-			if (col == 5)
-			{
-				col = 0;
-				row++;
-			}
-		} // for (Character character : key)
-
-		return true;
-
-	}// setKeyBL(char[] key)
-
-	public boolean setKeyTR(char[] key)
-	{
-		if (key.length != 25)
-			return false;
-
-		int row = 0, col = 0;
-		for (Character character : key)
-		{
-			mTR[row][col++] = character;
-			if (col == 5)
-			{
-				col = 0;
-				row++;
-			}
-
-		} // for (Character character : key)
-
-		return true;
-
-	}// setKeyTR(char[] key)
 
 	@Override
 	public void run()
@@ -153,6 +132,25 @@ public class DecryptionA implements Runnable
 
 	}// run()
 
+	/*
+	 * Encrypt one line, if the numbers of characters is odd the extra character is
+	 * passed to the next line.
+	 */
+	/*
+	 * Big-O is the same than EncryptA
+	 * Big-O: Time : O(a) ( a=lineEncryptp.length() ).
+	 * 
+	 * Estimation : T(n) =25n +5 , n = average number of characters per line , for
+	 * the "WarAndPeace-LeoTolstoy" , n=80 and at 2 billion computation per second
+	 * (25*80 + 5)/(2*10^9)= 1.0025 *10^(-6) second
+	 * 
+	 * Big-O: Space : O(a) ( a=lineEncryptp.length() ).
+	 * 
+	 * Estimation : 2*char + 7*int + 1*boolean + n + (the 4 arrays of chars) = 2*32
+	 * + 7*32 + 1*32 + 80 + 4n^2 + 64 n + 256 = 21,376 bits (assuming that boolean
+	 * use 32 bits and 80 average characters per line)
+	 */
+	
 	private void encryptLine(String lineEncryptp)
 	{
 		if (l1 != 0)
@@ -248,6 +246,23 @@ public class DecryptionA implements Runnable
 		}
 	}
 
+	/*
+	 * Create matrices for encryption
+	 */
+	/*
+	 * Big0) is the smae than Enxrypt A
+	 * Big-O: Time : O(p^2) p = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 * 
+	 * Estimation : 25*4 + 25*4 (each loop runs 25 times with 2 operations plus the
+	 * increase and the comparison) = 200 at 2 billion operation per second
+	 * 200/(2*10^(9)) = 1*10(-7) seconds
+	 * 
+	 * Big-O: Space : O(p), p = MATRIX_SIZE but MATRIX_SIZE=5 so O(1).
+	 * 
+	 * Estimation A 2D char array = (16 +2n)^2 = 4n^2 + 64 n + 256 , n = char, plus
+	 * 4 *int , asuming char is 32 bits and int it is 32 so 4*(32)^2 + 64*32 + 256 +
+	 * 4*32 = 4,576 bits.
+	 */
 	private void createEncMatrices()
 	{
 

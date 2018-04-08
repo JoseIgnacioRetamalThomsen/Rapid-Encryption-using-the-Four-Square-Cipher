@@ -1,12 +1,16 @@
 package ie.gmit.sw;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+/*
+ * Rapid Encryption using the Four-Square Cipher
+ * Jose Ignacio Retamal
+ * G00351330@gmit.ie
+ *
+ * Graphic user interface using console.
+ * 
+ * 
+ */
 
 public class UserInterface
 {
@@ -15,21 +19,18 @@ public class UserInterface
 	final static String mainMenuHeader1 = "Rapid Encryption using the Four-Square Cipher ";
 	final static String mainMenuHeader2 = "Jose Ignacio Retamal, Data Strutures & Algorithms, GMIT 2018";
 	final static String[] mainMenuOptions =
-	{ "Encryption using 5x5 matrices.", "Decryption.", "Exit" };
+	{ "Encryption.", "Decryption.", "Exit" };
 
 	// 5x5 matrix strings
-	final static String simpleMatrixMenuHeader1 = " Four-Square Cipher. Four 5x5 matrices.";
+	final static String simpleMatrixMenuHeader1 = " Encryption.";
 	final static String simpleMatrixMenuHeader2 = " Each of the 5x5 matrices contains 25 letters(j is remplaced by i). ";
 	final static String encryptionAMenuOptions[] =
-	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
+	{ "Please setup everything.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
 			"Set output file", "Set memory constraint.", "Change Algorith.", "Back to main menu." };
 
 	final static String decryptionAMenuOptions[] =
-	{ "Please setup evething.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
+	{ "Please setup everything.", "Input new keys.", "Random generate key.", "Set Input File.", "Set input URL ",
 			"Set output file", "Set memory constraint.", "Change Algorith.", "Back to main menu." };
-
-	final static String encryptionAFileOptions[] =
-	{ "Please setup evething.", "input file ", "input file url", "output file", "back to keys." };
 
 	// file variable
 	Scanner scanner = new Scanner(System.in);
@@ -154,7 +155,9 @@ public class UserInterface
 			System.out.println(encryptAllA.getQueueSize());
 
 			System.out.print("Algoritm selected: ");
-			System.out.println(usingAlgorithA ? "A" : "B");
+			System.out.println(usingAlgorithA
+					? "A : any not letter character is removed, when odd line character is passed to next line, if the total amount of characters is odd the last will be mathc with X."
+					: "B : Characters that are not letters are keeped in same position, if a line have an odd number of characters the last will be match with X. ");
 			System.out.println();
 
 			if (isSetup)
@@ -208,6 +211,7 @@ public class UserInterface
 			case 5:
 
 				fileManagerA.inputURL();
+				isFromUrl = true;
 				break;
 
 			case 6:

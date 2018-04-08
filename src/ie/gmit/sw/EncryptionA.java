@@ -74,19 +74,19 @@ public class EncryptionA implements Runnable
 	}// EncryptionA(
 
 	/*
-	 * Big-O (1): Time :O(n) = O(a x m) Look at WriteFile (1).
+	 * Big-O (5): Time :O(n) = O(a x m) Look at WriteFile (1).
 	 * 
-	 * Estimation  (2): TimeToRun = createEncMatrices()Time + m*encryptLine()Time
+	 * Estimation  (6): TimeToRun = createEncMatrices()Time + m*encryptLine()Time
 	 * +10/(3*10^9) using the values calculated below and m= 64,927 TimeToRun =
 	 * 1*10(-7)  seconds + 64,927* 1.0025 *10^(-6) second second (we can forget about that
 	 * 10...) TimeTorun = 0.0650894 seconds , We can see that only the part
 	 * m*encryptLine()Time have a relevant value , because m*encryptLine()Time= 0.0650893
 	 * 
-	 * Big-O: Space : O(a*m1) m1= queue.Size() since queue.Size()= cons -> O(a).
+	 * Big-O: Space (7) : O(a*m1) m1= queue.Size() since queue.Size()= cons -> O(a).
 	 * So same than WriteLine (3) apply , because in worst case all characters are in one line so will be O(a),
 	 * but if the characters are well distributes in the lines (all lines with more or less same amount of characters) with  will be O(1).
 	 * 
-	 * Estimation : SpaceUsed = createEncMatrices() + m1*encryptLine() , using the default value m1=10,000 
+	 * Estimation (8) : SpaceUsed = createEncMatrices() + m1*encryptLine() , using the default value m1=10,000 
 	 * sapaceUsed = 4,576 bits + 10,000*21,376 bits = 213,764,576 bits = 213.8 MB
 	 */
 	@Override

@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class EncryptAndDecrypt
 {
-	private static int DEFAULT_QUEUE_SIZE = 1000;
+	private static int DEFAULT_QUEUE_SIZE = 10000;
 
 	private int queueSize;
 
@@ -35,14 +35,18 @@ public class EncryptAndDecrypt
 	}
 
 	/*
-	 * Big-O: Time : O(n), n = number of characters in the file. Because is O(n +
-	 * 2*n1) where n1 = number of lines in file. because n = c * n1, c= constant
-	 * (the total number of characters in the file is equal to the total number of
-	 * lines multiply for a constant) so O(n + 2*n1)=O(n+2cn) = O((2c+1)n = O(Cn) =
-	 * O(n) where C = constant = 2c +1
+	 * Big-O: Time : We look at the 3 run methods WriteFile+EncryptA+parseFile = O
+	 * (n) +O(n)+ O(n) = O(n)
 	 * 
-	 * Big-O: Space : O(n + m) n = average number of characters per line, m =
-	 * QUEUE_SIZE. If QUEUE_SIZE = constant => O(n).
+	 * Estimation : the higher of the thread that is EncryptionA = 0.0650893 seconds
+	 * 
+	 * Big-O: Space : O(n) n = queuseSize, this constraint the memory usage of all
+	 * the classes.
+	 * 
+	 * Estimation : 2 queue + memory used for each class, this is  pretty much
+	 * WriteFile.run(0 +parseFile.run() + EncryptA.encryptLine() + EncryptA.createMatrices() + some extra that is not relevant
+	 * because for the run in ecnryptMatrices the same queues are use
+	 * so  25,600,000 + 25,600,000 + 21,376 + 4,576 = 51,206,712 kits = 51 MB
 	 */
 	public void encryptA(Boolean isFromUrl)
 	{
@@ -97,6 +101,10 @@ public class EncryptAndDecrypt
 
 	}// encryptA(Boolean isFromUrl)
 
+	/*
+	 * Big-O same than encryptA
+	 */
+	
 	public void decryptA(Boolean isFromUrl)
 	{
 		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue<CharSequence>(queueSize);
@@ -147,6 +155,10 @@ public class EncryptAndDecrypt
 
 	}// decryptA(Boolean isFromUrl)
 
+	
+	/*
+	 * Big-O same than encryptA
+	 */
 	public void encryptB(Boolean isFromUrl)
 	{
 
@@ -174,7 +186,7 @@ public class EncryptAndDecrypt
 		Thread t3 = new Thread(writeFile);
 
 		System.out.println("Starting encryption.");
-		
+
 		long startTime = System.nanoTime();
 
 		t1.start();// Time: O(n1), n1 = number of lines in file. Space : O(n) n = number of average
@@ -201,6 +213,10 @@ public class EncryptAndDecrypt
 
 	}// encryptB(Boolean isFromUrl)
 
+	
+	/*
+	 * Big-O same than encryptA
+	 */
 	public void decryptB(Boolean isFromUrl)
 	{
 		BlockingQueue<CharSequence> qParseToEncrypt = new LinkedBlockingQueue<CharSequence>(queueSize);
@@ -229,7 +245,7 @@ public class EncryptAndDecrypt
 		Thread t3 = new Thread(writeFile);
 
 		long startTime = System.nanoTime();
-		
+
 		t1.start();
 		t2.start();
 		t3.start();
@@ -242,13 +258,12 @@ public class EncryptAndDecrypt
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Encryption done.");
 		long stopTime = System.nanoTime();
 		System.out.println("Time in  seconds: " + (stopTime - startTime) / Math.pow(10, 9));
 
 		waitForEnter();
-		
 
 	}// decryptB(Boolean isFromUrl)
 

@@ -69,7 +69,7 @@ public class WriteFile implements Runnable
 	 * of characters and l = size of queue, for the "WarAndPeace-LeoTolstoy" file
 	 * let say that the average number of characters is 80 and with the default
 	 * value of queue size of 10,000 and lets say that a char use 32 bits so
-	 * 80*10,000*(32)bits= 25,600,600 bits = 25.6 MB.
+	 * 80*10,000*(32)bits= 25,600,000 bits = 25.6 MB.
 	 */
 	@Override
 	public void run()

@@ -6,6 +6,17 @@ import java.net.URL;
 import java.util.concurrent.BlockingQueue;
 
 /*
+ * Rapid Encryption using the Four-Square Cipher
+ * Jose Ignacio Retamal
+ * G00351330@gmit.ie
+ *
+ * Parse file, method that read the input file, can be from system path or URL
+ * 
+ * 
+ */
+
+
+/*
  * Big-O: 
  * n = total number of characters in the input file.
  * m = total number of lines in the input file.

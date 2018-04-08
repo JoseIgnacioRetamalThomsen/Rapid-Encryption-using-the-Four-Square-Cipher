@@ -2,6 +2,14 @@ package ie.gmit.sw;
 
 import java.util.concurrent.BlockingQueue;
 
+/*
+ * Big-O: 
+ * Basically is the same than EncryptionA
+ * n = total number of characters in the input file.
+ * m = total number of lines in the input file.
+ * a = average number of characters per line in the input file.
+ * p = number of characters in one line.
+ */
 public class DecryptionB implements Runnable
 {
 	private final BlockingQueue<CharSequence> queueIn;
