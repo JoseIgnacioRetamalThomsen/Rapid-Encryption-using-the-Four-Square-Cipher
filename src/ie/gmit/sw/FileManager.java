@@ -1,9 +1,20 @@
 package ie.gmit.sw;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Scanner;
+
+/*
+ * Rapid Encryption using the Four-Square Cipher
+ * Jose Ignacio Retamal
+ * G00351330@gmit.ie
+ *
+ * For input file names and URL
+ * 
+ * 
+ */
 
 public class FileManager
 {
@@ -82,7 +93,7 @@ public class FileManager
 
 		// scanner = new Scanner(System.in);
 
-		System.out.print("Please enter the file name: ");
+		System.out.print("Please enter the file name(you can enter just the file name if the file is in the same folder than the jar file, if is not please enter the full path): \n");
 		input = scanner.nextLine().trim();
 
 		while (!checkIfFileExist(input, true))
@@ -140,13 +151,25 @@ public class FileManager
 		try
 		{
 			URL url = new URL(urlString);
+			BufferedReader fileIn = new BufferedReader(new InputStreamReader(url.openStream()));
+			
+			if(fileIn.ready())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+				
+				
 
 		} catch (Exception e)
 		{
 			return false;
 
 		}
-		return true;
+		//return true;
 
 	}// checkIfUrlExist(String urlString)
 

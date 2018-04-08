@@ -5,6 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.concurrent.BlockingQueue;
+/*
+ * Rapid Encryption using the Four-Square Cipher
+ * Jose Ignacio Retamal
+ * G00351330@gmit.ie
+ *
+ * Write the result to file reading lines from queue.
+ * 
+ * 
+ */
+
 
 /*
  * Big-O: 
@@ -20,6 +30,7 @@ public class WriteFile implements Runnable
 
 	PrintWriter outputFile;
 
+	//constructor
 	public WriteFile(BlockingQueue<CharSequence> queue)
 	{
 
@@ -80,10 +91,13 @@ public class WriteFile implements Runnable
 
 			while (true)// Big-O: Time : O(m)
 			{
+				//take line from queue
 				line = queue.take();
 
+				//stop when take the poison
 				if (!(line instanceof Poison))
 				{
+					//print line to file
 					outputFile.println(line);// Big-O: Time : O(p) because have to go character by character for write
 												// the full string in the file 
 												

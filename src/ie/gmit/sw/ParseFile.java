@@ -33,7 +33,8 @@ public class ParseFile implements Runnable
 
 	String line;
 
-	ParseFile(BlockingQueue<CharSequence> queueP)
+	//constructor
+	public ParseFile(BlockingQueue<CharSequence> queueP)
 	{
 		queue = queueP;
 
@@ -115,6 +116,7 @@ public class ParseFile implements Runnable
 			{
 				try
 				{
+					//put line in queue
 					queue.put(line);// O(1) queue put on front operation.
 
 				} catch (InterruptedException e)
@@ -126,6 +128,7 @@ public class ParseFile implements Runnable
 
 			try
 			{
+				//ad poison to queue
 				queue.put(new Poison());
 
 			} catch (InterruptedException e)

@@ -15,8 +15,21 @@ public class Runner
 
 	public static void main(String[] args)
 	{
-		UserInterface userInterface = new UserInterface();
-		userInterface.start();
+		//try catch for out of memory error
+		try
+		{
+
+			UserInterface userInterface = new UserInterface();
+			userInterface.start();
+			
+		} catch (Error error)
+		{
+			error.printStackTrace();
+			System.out.println(
+					"The program have crash, probably for memory problem. You can try to set The memory constraint to a smaller value.");
+			
+			
+		}
 
 	}// main(String[] args)
 

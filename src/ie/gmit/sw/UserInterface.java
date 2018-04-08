@@ -303,9 +303,14 @@ public class UserInterface
 				fileManagerA.displayOutputFileName();
 				isSetup = true;
 			}
+			
+			System.out.print("Memory constraint:  ");
+			System.out.println(encryptAllA.getQueueSize());
 
 			System.out.print("Algoritm selected: ");
-			System.out.println(usingAlgorithA ? "A" : "B");
+			System.out.println(usingAlgorithA
+					? "A : any not letter character is removed, when odd line character is passed to next line, if the total amount of characters is odd the last will be mathc with X."
+					: "B : Characters that are not letters are keeped in same position, if a line have an odd number of characters the last will be match with X. ");
 			System.out.println();
 
 			if (isSetup)
@@ -346,6 +351,7 @@ public class UserInterface
 			case 5:
 
 				fileManagerA.inputURL();
+				isFromUrl = true;
 				break;
 
 			case 6:

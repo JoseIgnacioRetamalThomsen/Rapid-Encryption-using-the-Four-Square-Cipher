@@ -3,6 +3,20 @@ package ie.gmit.sw;
 import java.util.concurrent.BlockingQueue;
 
 /*
+ * Rapid Encryption using the Four-Square Cipher
+ * Jose Ignacio Retamal
+ * G00351330@gmit.ie
+ *
+ *Decryption B
+ *
+ * Each line is decrypted  independent, if the line have and odd 
+ * number of characters the extra one will be match with X. Characters that are outside of 
+ * the letters range will be keep in the same position.
+ * 
+ * 
+ */
+
+/*
  * Big-O: 
  * Basically is the same than EncryptionA
  * n = total number of characters in the input file.
