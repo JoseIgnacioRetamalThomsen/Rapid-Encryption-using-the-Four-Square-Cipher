@@ -8,10 +8,9 @@ import java.util.concurrent.BlockingQueue;
 /*
  * Rapid Encryption using the Four-Square Cipher
  * Jose Ignacio Retamal
- * G00351330@gmit.ie
+ *  G00351330@gmit.ie
  *
  * Write the result to file reading lines from queue.
- * 
  * 
  */
 
@@ -22,6 +21,7 @@ import java.util.concurrent.BlockingQueue;
  * m = total number of lines in the input file.
  * a = average number of characters per line in the input file.
  * p = number of characters in one line.
+ *
  */
 public class WriteFile implements Runnable
 {
