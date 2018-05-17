@@ -3,6 +3,10 @@
 	Jose Ignacio Retamal
 	G00351330@gmit.ie
 
+
+	For run the program : java -cp four-square.jar  ie.gmit.sw.Runner
+
+
 	When you just run the program, you will get 3 options, one for Encrypt another for decrypt and the
 last one for exit the program. In the encrypt and decrypt you will need to setup the input and output(4 and 6 ) 
 file or URL(At least 5), when that is done you can chose the option for encrypt/decrypt. 
